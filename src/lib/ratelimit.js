@@ -1,18 +1,21 @@
-export const attempts = new Map()
+import { redis } from './redis'
 
-export const checkLimit = (key) => {
-    const now = Date.now()
-    const userAttempts = attempts.get(key) || []
+export const checkLimit = async (key) => {
 
-    const recentAttempts = userAttempts.filter(time => time > now - 60000)
+    const rediskey = `rate_limit:${key}`
 
 
-    if (recentAttempts.length >= 5) {
+    const currentAttempts = await redis.get(rediskey) || 0
+
+    if (parseInt(currentAttempts) >= 5) {
         return { allowed: false }
     }
 
-    recentAttempts.push(now)
-    attempts.set(key, recentAttempts)
+    const newAttempts = await redis.incr(rediskey)
 
-    return { allowed: true, remaining: 5 - recentAttempts.length }
+    if (newAttempts === 1) {
+        await redis.expire(rediskey, 60)
+    }
+
+    return { allowed: true, remaining: 5 - newAttempts}
 }

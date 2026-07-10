@@ -5,8 +5,8 @@ import { getUserFromDBByEmail, createGoogleUserInDB } from '@/lib/db'
 import { compare } from 'bcryptjs'
 import { loginSchema } from '@/lib/zod'
 import { headers } from 'next/headers'
-import { attempts, checkLimit } from './ratelimit'
-
+import { checkLimit } from './ratelimit'
+import {redis} from './redis'
 export const authConfig: AuthOptions = {
     providers: [
         GoogleProvider({
@@ -36,7 +36,7 @@ export const authConfig: AuthOptions = {
                 const ip = headersList.get('x-forwarded-for') || 'unknown'
                 const key = `${ip}:${credentials.email}`
 
-                const limit = checkLimit(key)
+                const limit = await checkLimit(key)
 
                 if (!limit.allowed) {
                     throw new Error('TooManyAttempts')
@@ -66,7 +66,7 @@ export const authConfig: AuthOptions = {
                     )
 
                     if (isPasswordCorrect) {
-                        attempts.delete(key)
+                        await redis.del(`rate_limit:${key}`)
                         const { password, ...userWithoutPass } = currentUser
                         return userWithoutPass as User
                     }

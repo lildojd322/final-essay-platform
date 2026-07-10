@@ -33,10 +33,8 @@ async function handleRateLimit(request: NextRequest) {
 
 
 export async function proxy(request: NextRequest) {
-
     let sessionToken = request.cookies.get('__Secure-next-auth.session-token') ||
         request.cookies.get('next-auth.session-token')
-
 
     const { pathname } = request.nextUrl
 
@@ -46,8 +44,6 @@ export async function proxy(request: NextRequest) {
             return limitResponse
         }
     }
-
-
     if (sessionToken) {
         if (pathname === '/signin' || pathname === '/register') {
 
@@ -62,8 +58,6 @@ export async function proxy(request: NextRequest) {
         }
 
     }
-
-
 
     return NextResponse.next()
 }
