@@ -23,15 +23,11 @@ export const authConfig: AuthOptions = {
                 if (!credentials) {
                     return null
                 }
-
                 const parsedCredentials = loginSchema.safeParse(credentials)
                 if (!parsedCredentials.success) {
                     return null
                 }
                 const { email, password } = parsedCredentials.data
-
-
-
                 const headersList = await headers()
                 const ip = headersList.get('x-forwarded-for') || 'unknown'
                 const key = `${ip}:${credentials.email}`
@@ -42,36 +38,24 @@ export const authConfig: AuthOptions = {
                     throw new Error('TooManyAttempts')
                 }
 
-
                 const currentUser = await getUserFromDBByEmail(email)
-
                 if (!currentUser) {
                     throw new Error("UserNotFound")
-
                 }
-
-             
-
-
                 if (!currentUser.emailVerified) {
                     throw new Error("EmailNotVerified")
                 }
-
-
-
                 if (currentUser && currentUser.password) {
                     const isPasswordCorrect = await compare(
                         password,
                         currentUser.password
                     )
-
                     if (isPasswordCorrect) {
                         await redis.del(`rate_limit:${key}`)
                         const { password, ...userWithoutPass } = currentUser
                         return userWithoutPass as User
                     }
                 }
-
                 return null
             }
         })
@@ -122,12 +106,11 @@ export const authConfig: AuthOptions = {
                 }
                 if (account?.provider === "google") {
 
-                    const dbUser = await getUserFromDBByEmail(user.email);
+                    const dbUser = await getUserFromDBByEmail(user.email)
                     if (dbUser) {
-                        token.sub = String(dbUser.id);
+                        token.sub = String(dbUser.id)
                     }
                 } else {
-
                     token.sub = user.id
                 }
             }

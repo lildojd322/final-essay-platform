@@ -11,8 +11,6 @@ export async function POST(request) {
 
         const body = await request.json()
         const { email, password, name } = registerSchema.parse(body)
-
-
         const result = await forwardUserToDB(email, password, name)
 
         const confirmationLink = `${process.env.NEXTAUTH_URL}/confirm-email?token=${result.token}`
@@ -43,10 +41,8 @@ export async function POST(request) {
                     <p style="margin-top: 15px; color: #666; font-size: 12px;">The link will expire in 1 hour.</p>
                 </div>
          `
-
-
-
         })
+
 
         return NextResponse.json({
             message: "User created successfully",

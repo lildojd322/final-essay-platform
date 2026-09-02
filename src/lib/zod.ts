@@ -58,4 +58,4 @@ export const newPasswordSchema = z.object({
     .refine((data) => data.password === data.repeatPassword, {
         message: "Passwords do not match",
         path: ["repeatPassword"],
-    })
+    }) 

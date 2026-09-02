@@ -38,7 +38,7 @@ const ConfirmEmail = async ({ searchParams }) => {
             return (
                 <div style={{ maxWidth: "450px", margin: "100px auto", textAlign: "center", fontFamily: "sans-serif" }}>
                     <h2 style={{ color: "#ef4444" }}>Link has expired</h2>
-                    <p>СThe link's validity period (1 hour) has expired. Please register again.</p>
+                    <p>The link's validity period (1 hour) has expired. Please register again.</p>
                 </div>
             )
         }

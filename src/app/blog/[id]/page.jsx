@@ -22,3 +22,4 @@ const PostPage = async ({ params }) => {
 }
 
 export default PostPage
+
