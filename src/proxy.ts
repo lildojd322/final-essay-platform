@@ -11,7 +11,7 @@ async function handleRateLimit(request: NextRequest) {
         request.headers.get('x-real-ip') ||
         '127.0.0.1'
 
-    const redisKey = `pr1:ratelimit:${ip}`
+    const redisKey = `pr10:ratelimit:${ip}`
     try {
         const currentRequests = await redis.incr(redisKey)
         if (currentRequests === 1) {

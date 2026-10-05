@@ -26,7 +26,7 @@ export async function POST(request) {
         }
 
         const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
-        
+
         if (!allowedTypes.includes(file.type)) {
             return NextResponse.json({ error: 'JPG, PNG or WebP only' }, { status: 400 })
         }
@@ -39,14 +39,18 @@ export async function POST(request) {
         const buffer = Buffer.from(bytes)
         const base64 = `data:${file.type};base64,${buffer.toString('base64')}`
 
-        const result = await cloudinary.uploader.upload(base64, {
+        const safeUserId = session.user.email.replace(/[^a-zA-Z0-9]/g, '_')
+
+    const result = await cloudinary.uploader.upload(base64, {
             folder: 'avatars',
+            public_id: `user_${safeUserId}`,
+            overwrite: true,              
+            invalidate: true,              
             transformation: [
                 { width: 300, height: 300, crop: 'fill' },
                 { format: 'webp', quality: 'auto' }
             ]
         })
-
         const url = result.secure_url
 
         await updateUserAvatarByEmail(session.user.email, url)
