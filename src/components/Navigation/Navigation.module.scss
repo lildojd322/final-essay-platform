@@ -23,13 +23,13 @@
 
     &:hover {
         color: var(--primary);
-        background-color: rgba(59, 130, 246, 0.1);
+      background-color: rgba(225, 168, 45, 0.1);
         text-decoration: none;
     }
 
     &.active {
         color: var(--primary);
-        background-color: rgba(59, 130, 246, 0.1);
+        background-color: rgba(225, 168, 45, 0.1);
     }
 }
 

@@ -19,34 +19,34 @@
     box-sizing: border-box;
   }
 
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --border: #27272a;
-    --card-bg: #18181b;
-    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3);
-    --loader-bg: #1a1a1a;
-    --loader-fg: #2a2a2a;
-    --primary: #3b82f6;
-    --primary-hover: #2563eb;
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --border: #27272a;
+  --card-bg: #18181b;
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3);
+  --loader-bg: #1a1a1a;
+  --loader-fg: #2a2a2a;
+  --primary: #9D6638;
+  --primary-hover: #cecabc;
+}
+
+[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #171717;
+  --border: #e5e7eb;
+  --card-bg: #ffffff;
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  --loader-bg: #f3f3f3;
+  --loader-fg: #e0e0e0;
+  --primary: #9D6638;
+  --primary-hover: #cecabc;
+  
+  svg {
+    stroke: #000;
   }
+}
 
-
-  [data-theme="light"] {
-    --background: #ffffff;
-    --foreground: #171717;
-    --border: #e5e7eb;
-    --card-bg: #ffffff;
-    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
-    --loader-bg: #f3f3f3;
-    --loader-fg: #e0e0e0;
-    --primary: #3b82f6;
-    --primary-hover: #2563eb;
-
-    svg {
-      stroke: #000;
-    }
-  }
 
   @theme inline {
     --color-background: var(--background);
