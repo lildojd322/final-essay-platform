@@ -230,8 +230,8 @@ export const getUserFromDBByToken = cache(async (token) => {
     return rows[0]
 })
 
-export const updateUserVerificationToken = cache(async (id) => {
-    const [rows] = await pool.execute('UPDATE users SET emailVerified = NOW(),  verificationToken = NULL WHERE id = ?', [id])
+export const updateUserVerificationToken = cache(async (email) => {
+    const [rows] = await pool.execute('UPDATE users SET emailVerified = NOW(),  verificationToken = NULL WHERE email = ?', [email])
     return rows
 })
 

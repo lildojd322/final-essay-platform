@@ -822,6 +822,14 @@ baseline-browser-mapping@^2.10.12, baseline-browser-mapping@^2.9.19:
   resolved "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.10.20.tgz"
   integrity sha512-1AaXxEPfXT+GvTBJFuy4yXVHWJBXa4OdbIebGN/wX5DlsIkU0+wzGnd2lOzokSk51d5LUmqjgBLRLlypLUqInQ==
 
+bcrypt@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.npmjs.org/bcrypt/-/bcrypt-6.0.0.tgz"
+  integrity sha512-cU8v/EGSrnH+HnxV2z0J7/blxH8gq7Xh2JFT6Aroax7UohdmiJJlxApMxtKfuI7z68NvvVcmR78k2LbT6efhRg==
+  dependencies:
+    node-addon-api "^8.3.0"
+    node-gyp-build "^4.8.4"
+
 bcryptjs@^3.0.3:
   version "3.0.3"
   resolved "https://registry.npmjs.org/bcryptjs/-/bcryptjs-3.0.3.tgz"
@@ -2275,6 +2283,11 @@ node-addon-api@^7.0.0:
   resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-7.1.1.tgz"
   integrity sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==
 
+node-addon-api@^8.3.0:
+  version "8.9.2"
+  resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-8.9.2.tgz"
+  integrity sha512-VijLXbi3UACN69I0JVXJsX4tjACjNoQDgv2gTF6sx2wWEi8tkSg2eX8p5gSIFi8z2+DL3oHmY6OyKce38SDolg==
+
 node-exports-info@^1.6.0:
   version "1.6.0"
   resolved "https://registry.npmjs.org/node-exports-info/-/node-exports-info-1.6.0.tgz"
@@ -2284,6 +2297,11 @@ node-exports-info@^1.6.0:
     es-errors "^1.3.0"
     object.entries "^1.1.9"
     semver "^6.3.1"
+
+node-gyp-build@^4.8.4:
+  version "4.8.4"
+  resolved "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-4.8.4.tgz"
+  integrity sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ==
 
 node-releases@^2.0.36:
   version "2.0.37"
@@ -2542,7 +2560,7 @@ react-content-loader@^7.1.2:
   resolved "https://registry.npmjs.org/react-content-loader/-/react-content-loader-7.1.2.tgz"
   integrity sha512-naFG7OERUQNPKQt1QWHyBF0/y6Zmr7dOzqjs1U5yOnu4OZmcE3+b/blp40dEKa9lvYAzOuj5dvfTK1cg5YWJkA==
 
-"react-dom@^17.0.2 || ^18 || ^19", "react-dom@^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0", react-dom@19.2.4:
+"react-dom@^17.0.2 || ^18 || ^19", "react-dom@^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0", "react-dom@>=16.8.6 || ^17.0.0 || ^18.0.0", react-dom@19.2.4:
   version "19.2.4"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-19.2.4.tgz"
   integrity sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==
@@ -2554,7 +2572,12 @@ react-is@^16.13.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-"react@^17.0.2 || ^18 || ^19", "react@^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0", react@^19.2.4, "react@>= 16.8.0 || 17.x.x || ^18.0.0-0 || ^19.0.0-0", react@>=18.0.0, react@19.2.4:
+react-otp-input@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.npmjs.org/react-otp-input/-/react-otp-input-3.1.1.tgz"
+  integrity sha512-bjPavgJ0/Zmf/AYi4onj8FbH93IjeD+e8pWwxIJreDEWsU1ILR5fs8jEJmMGWSBe/yyvPP6X/W6Mk9UkOCkTPw==
+
+"react@^17.0.2 || ^18 || ^19", "react@^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0", react@^19.2.4, "react@>= 16.8.0 || 17.x.x || ^18.0.0-0 || ^19.0.0-0", "react@>=16.8.6 || ^17.0.0 || ^18.0.0", react@>=18.0.0, react@19.2.4:
   version "19.2.4"
   resolved "https://registry.npmjs.org/react/-/react-19.2.4.tgz"
   integrity sha512-9nfp2hYpCwOjAN+8TZFGhtWEwgvWHXqESH8qT89AT/lWklpLON22Lc8pEtnpsZz7VmawabSU0gCjnj8aC0euHQ==

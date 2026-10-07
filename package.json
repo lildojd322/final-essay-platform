@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@upstash/redis": "^1.38.0",
+    "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.10.0",
     "content-loader": "^2.0.11",
@@ -20,6 +21,7 @@
     "react": "19.2.4",
     "react-content-loader": "^7.1.2",
     "react-dom": "19.2.4",
+    "react-otp-input": "^3.1.1",
     "sass": "^1.99.0",
     "sharp": "^0.34.5",
     "zod": "^4.4.2",

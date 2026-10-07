@@ -8,39 +8,49 @@ import { loginSchema } from '@/lib/zod'
 const SignInForm = () => {
     const router = useRouter()
     const [error, setError] = useState('')
-
+    const [isPending, setIsPending] = useState(false)
 
     const handleSubmit = async (event) => {
         event.preventDefault()
         setError('')
+        setIsPending(true)
 
         const formData = new FormData(event.currentTarget)
-
         const data = Object.fromEntries(formData.entries())
-
         const validation = loginSchema.safeParse(data)
-
 
         if (!validation.success) {
             setError(validation.error.issues[0].message)
+            setIsPending(false)
             return
         }
 
+        try {
 
-        const response = await signIn('credentials', {
-            email: validation.data.email,
-            password: validation.data.password,
-            redirect: false,
-        })
+            const response = await fetch('/api/users/reaffirm/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(validation.data)
+            })
 
-      if (response?.error === 'TooManyAttempts') {
-            setError('Too many attempts. Please try again later.')
-        } else if (response?.error) {
-            setError('Invalid email or password')
-        } else if (response && !response.error) {
-            router.push('/profile')
+
+            const resData = await response.json()
+
+            if (!response.ok) {
+                setError(resData.error || 'Something went wrong')
+                return
+            }
+            if (resData.success) {
+                sessionStorage.setItem('pending_verification_email', validation.data.email)
+                router.push(`/emailConfirm`)
+                router.refresh()
+            }
+        } catch (err) {
+            setError('Failed to connect to server')
+        } finally {
+            setIsPending(false)
         }
-       
+
     }
 
 
@@ -61,7 +71,7 @@ const SignInForm = () => {
                 required
                 className={styles.input}
             />
-            <button type="submit" className={styles.submitButton}>
+            <button type="submit" disabled={!!isPending} className={styles.submitButton}>
                 Sign in
             </button>
         </form>
