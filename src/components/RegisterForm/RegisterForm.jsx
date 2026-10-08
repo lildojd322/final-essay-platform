@@ -19,7 +19,7 @@ const RegisterForm = () => {
         const data = Object.fromEntries(formData.entries())
 
         const validation = registerSchema.safeParse(data)
-
+        const targetForm = event.target
         if (!validation.success) {
             const firstError = validation.error.issues[0].message
             setError(firstError)
@@ -28,20 +28,18 @@ const RegisterForm = () => {
 
 
 
-        const response = await fetch('/api/register', {
+        const response = await fetch('/api/users/create', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(validation.data)
         })
 
         if (response.ok) {
-
-            setIsSuccess(true)
-            /*  const res = await signIn('credentials', {
-                 email: data.email,
-                 password: data.password,
-                 callbackUrl: '/profile'
-             }) */
+            setError('')
+            targetForm.reset()
+            const data = await response.json()
+            sessionStorage.setItem('pending_verification_email', data.email)
+            router.push(`/emailConfirm`)
         } else {
             const result = await response.json()
             setError(result.error || 'Registration failed')
