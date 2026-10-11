@@ -1,83 +1,67 @@
-import { getServerSession } from 'next-auth'
-import { forwardResetTokenToDB } from '../../lib/db'
-import { createTransport } from 'nodemailer'
+'use client'
 import styles from './reset.module.scss'
-import { redirect } from 'next/navigation'
-import { authConfig } from '../../lib/auth'
+import { useState } from "react"
+import { emailSchema } from '@/lib/zod'
+import { useRouter } from "next/navigation"
 
+const resetPassword = () => {
+    const router = useRouter()
+    const [error, setError] = useState('')
+    const [isPending, setIsPending] = useState(false)
 
-const resetPassword = async ({ searchParams }) => {
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        setError('')
+        setIsPending(true)
 
-    const session = await getServerSession(authConfig)
+        const formData = new FormData(event.currentTarget)
+        const data = Object.fromEntries(formData.entries())
+        const validation = emailSchema.safeParse(data)
 
-    if (session?.user) {
-        redirect('/profile')
-    }
-
-    const params = await searchParams
-    const isSent = params?.success === 'true'
-
-    const handleSubmit = async (formData) => {
-        'use server'
-        const email = formData.get('email')
-        const res = await forwardResetTokenToDB(email)
-        const token = res.token
-
-
-        if (token) {
-
-            const confirmationLink = `${process.env.NEXTAUTH_URL}/create-new-password?token=${token}`
-
-            const transport = createTransport({
-                host: process.env.EMAIL_SERVER_HOST,
-                port: Number(process.env.EMAIL_SERVER_PORT),
-                secure: true,
-                auth: {
-                    user: process.env.EMAIL_SERVER_USER,
-                    pass: process.env.EMAIL_SERVER_PASSWORD,
-                },
+        if (!validation.success) {
+            setError(validation.error.issues[0].message)
+            setIsPending(false)
+            return
+        }
+        try {
+            const response = await fetch('/api/users/resetPassword/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: validation.data.email,
+                })
             })
 
+            const resData = await response.json()
 
-            await transport.sendMail({
-                from: process.env.EMAIL_FROM,
-                to: email,
-                subject: 'mail confirmation',
-                html: `
-            <div style="font-family: sans-serif; padding: 20px;">
-                    <h2>Welcome!</h2>
-                    <p>To reset your password, click the button below:</p>
-                    <a href="${confirmationLink}" style="background: #2563eb; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
-                     reset password
-                    </a>
-                    <p style="margin-top: 15px; color: #666; font-size: 12px;">The link will expire in 1 hour.</p>
-                </div>
-         `
-
-            })
-
+            if (!response.ok) {
+                setError(resData.error || 'Something went wrong')
+                setIsPending(false)
+                return
+            }
+            if (resData.success) {
+                sessionStorage.setItem('pending_verification_email', validation.data.email)
+                router.push(`/reset-password/verify`)
+                router.refresh()
+            }
+        } catch (err) {
+            setError('Failed to connect to server')
+            setIsPending(false)
         }
 
-
-
-
-
-        redirect('?success=true')
     }
-    if (isSent) {
-        return <h1> We have sent a confirmation to your email.</h1>
-    }
-
 
     return (
-        <form action={handleSubmit} >
+        <form onSubmit={handleSubmit} >
             <h2 className={styles.h2}>
                 Enter your email
             </h2>
             <div className={styles.inputContainer}>
                 <input placeholder="Email"
                     required className={styles.input} type="email" name="email" />
+
                 <button type='submit' className={styles.submitButton}>confirm</button>
+                {error && <p className={styles.error}>{error}</p>}
             </div>
 
         </form>

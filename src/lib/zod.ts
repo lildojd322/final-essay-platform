@@ -46,7 +46,13 @@ export const keywordSchema = z.object({
     keyword: z.string().max(100).optional().default("")
 })
 
-export const newPasswordSchema = z.object({
+
+export const emailSchema = z.object({
+    email: z.string().email("Incorrect email format").min(2, "The email must be at least 2 characters long")
+        .max(60, "the email must not exceed 60 characters"),
+})
+
+const passwordFields = z.object({
     password: z
         .string()
         .min(6, "Password must be at least 6 characters long")
@@ -55,7 +61,26 @@ export const newPasswordSchema = z.object({
         .string()
         .min(1, "Please repeat your password")
 })
-    .refine((data) => data.password === data.repeatPassword, {
+
+
+export const newPasswordSchema = passwordFields.refine(
+    (data) => data.password === data.repeatPassword,
+    {
         message: "Passwords do not match",
         path: ["repeatPassword"],
-    }) 
+    }
+)
+
+
+export const backendPasswordResetSchema = passwordFields
+    .extend({
+        email: z.string().email("Incorrect email format"),
+        token: z.string().min(1, "Token is required")
+    })
+    .refine(
+        (data) => data.password === data.repeatPassword,
+        {
+            message: "Passwords do not match",
+            path: ["repeatPassword"],
+        }
+    )
