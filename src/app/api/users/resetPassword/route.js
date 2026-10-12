@@ -38,7 +38,7 @@ export async function POST(request) {
 
 
     } catch (error) {
-        console.error("ОШИБКА НА БЭКЕНДЕ:", error)
+
         if (error instanceof z.ZodError) {
             return NextResponse.json({ error: error.issues[0].message }, { status: 400 })
         }

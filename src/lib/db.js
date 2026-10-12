@@ -217,9 +217,9 @@ export async function deleteExpiredResetTokens() {
 
 
 
-export const updateUserPassword = async (password, id) => {
+export const updateUserPassword = async (password) => {
     const hashedPassword = await hash(password, 10)
-    await pool.execute('UPDATE users SET password = ?, resetToken = NULL, resetToken_createdAt = NULL WHERE id = ?', [hashedPassword, id])
+    await pool.execute('UPDATE users SET password = ?', [hashedPassword])
     return { success: true }
 }
 

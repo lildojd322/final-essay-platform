@@ -63,13 +63,14 @@ const ComponentName = () => {
             const resData = await response.json()
 
             if (!response.ok) {
+                console.log("ОШИБКА ОТ БЭКЕНДА:", resData);
                 setError(resData.error || 'Something went wrong')
                 setIsPending(false)
                 return
             }
             const loginResult = await signIn('credentials', {
                 email: email,
-                password: data.password,
+                password: password,
                 redirect: false
             })
             if (loginResult?.error) {
@@ -107,7 +108,7 @@ const ComponentName = () => {
                     id="repeatPassword"
                     placeholder="••••••••"
                     required />
-                <button type="confirm"> confirm</button>
+                <button className={styles.button} type="submit" disabled={isPending}    > confirm</button>
 
             </form>
         </div>
