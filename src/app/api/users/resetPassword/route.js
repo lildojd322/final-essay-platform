@@ -16,13 +16,14 @@ export async function POST(request) {
         if (!user) {
             return NextResponse.json({ error: "пользователя с такой почтой нет" }, { status: 400 })
         }
-        if (!user.emailVerified) {
-            return NextResponse.json({ error: "пользователя не подтвердил почту" }, { status: 400 })
-        }
-
         if (!user?.password) {
             return NextResponse.json({ error: "этот пользователь зашел с помощью соцсетей" }, { status: 400 })
         }
+
+        if (!user.emailVerified) {
+            return NextResponse.json({ error: "пользователь не подтвердил почту" }, { status: 400 })
+        }
+
 
 
 
