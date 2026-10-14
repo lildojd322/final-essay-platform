@@ -29,7 +29,7 @@ const UserProfile = ({ user }) => {
             />
 
             <h1 className={styles.name}>{user.name}</h1>
-            <h2 className={styles.userId}> id: {user?.id} </h2>
+            <h2 className={styles.userId}> id: {user?.id}  {session.user.role && <p> {session.user.role}</p>} </h2>
             <LatestUserPosts id={user.id} name={user.name} />
 
         </div>

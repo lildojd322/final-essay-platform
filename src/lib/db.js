@@ -131,6 +131,14 @@ export const fetchCountPostFromDBById = cache(async (userId) => {
 
 // users
 
+
+export const getTeacherEmailsFromDB = cache(async () => {
+    const [rows] = await pool.execute('SELECT * FROM teacher_emails')
+    return rows
+})
+
+
+
 export const getUsersFromDB = cache(async () => {
     const [rows] = await pool.execute('SELECT * FROM users')
     return rows

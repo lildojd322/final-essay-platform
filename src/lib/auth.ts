@@ -1,7 +1,7 @@
 import type { AuthOptions, User } from "next-auth";
 import GoogleProvider from 'next-auth/providers/google'
 import Credentials from "next-auth/providers/credentials";
-import { getUserFromDBByEmail, createGoogleUserInDB } from '@/lib/db'
+import { getUserFromDBByEmail, createGoogleUserInDB, getTeacherEmailsFromDB } from '@/lib/db'
 import { compare } from 'bcryptjs'
 import { loginSchema } from '@/lib/zod'
 import { headers } from 'next/headers'
@@ -38,11 +38,24 @@ export const authConfig: AuthOptions = {
                     throw new Error('TooManyAttempts')
                 }
 
-                const currentUser = await getUserFromDBByEmail(email)
+                const [currentUser, teacherEmails] = await Promise.all([
+                    getUserFromDBByEmail(email),
+                    getTeacherEmailsFromDB()
+                ])
+
                 if (!currentUser) {
                     throw new Error("UserNotFound")
                 }
+
+                const isTeacher = teacherEmails.some((t: any) =>
+                    (typeof t === 'string' ? t : t.email).toLowerCase() === cleanEmail
+                )
+
+                currentUser.role = isTeacher ? 'teacher' : 'student'
+
                 const cleanEmail = email ? email.trim().toLowerCase() : ""
+
+
 
                 if (password && password.length === 64) {
 
@@ -80,6 +93,7 @@ export const authConfig: AuthOptions = {
         async signIn({ user, account }) {
             if (account?.provider === "google") {
                 try {
+
                     const currentUser = await getUserFromDBByEmail(user.email!)
 
                     if (!currentUser) {
@@ -102,6 +116,7 @@ export const authConfig: AuthOptions = {
                 session.user.id = token.sub
                 session.user.provider = token.provider
                 session.user.image = token.picture
+                session.user.role = token.role as string
             }
             return session
         },
@@ -115,15 +130,28 @@ export const authConfig: AuthOptions = {
                 if (account) {
                     token.picture = user.image
                     token.provider = account.provider
+
                 }
                 if (account?.provider === "google") {
 
-                    const dbUser = await getUserFromDBByEmail(user.email)
+                    const [dbUser, teacherEmails] = await Promise.all([
+                        getUserFromDBByEmail(user.email!),
+                        getTeacherEmailsFromDB()
+                    ])
                     if (dbUser) {
                         token.sub = String(dbUser.id)
+
+
+
+                        const isTeacher = teacherEmails.some((t: any) =>
+                            (typeof t === 'string' ? t : t.email).toLowerCase() === user.email?.toLowerCase()
+                        )
+                        token.role = isTeacher ? 'teacher' : 'student'
+
                     }
                 } else {
                     token.sub = user.id
+                    token.role = (user as any).role || 'student'
                 }
             }
             return token

@@ -73,18 +73,18 @@ const Profile = () => {
         isModalOpen ? setIsModalOpen(false) : setIsModalOpen(true)
 
     }
-
     if (loading) return (<ProfileLoading />)
     return (
         <div className={styles.profileContainer}>
             {user && (
                 <>
+
                     <div className={styles.avatarBlock}>
                         <Image className={styles.userAvatar} src={getHighResImage(userImageUrl)} width={150} height={150} alt="user avatar" />
                         {provider === 'google' ? '' : <ChangeAvatar onAvatarChange={onAvatarChange} />}
                     </div>
                     <h1 className={styles.username}> {user?.name}</h1>
-                    <h2 className={styles.userId}> id: {user?.id} </h2>
+                    <h2 className={styles.userId}> id: {user?.id}  {/* {session.user.role && <p> {session.user.role}</p>} */} </h2>
                     <div className={styles.buttonContainer}>
                         <button className={styles.signOutButton} onClick={() => signOut({
                             callbackUrl: '/signin'

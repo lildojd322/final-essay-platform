@@ -11,7 +11,7 @@
     height: 150px;
     width: 150px;
     border-radius: 50%;
-
+   
 }
 
 .signOutButton {
@@ -54,6 +54,8 @@
     margin-top: 10px;
     color:  #ababab;
     font-size: 18px;
+    display: flex;
+    column-gap: 10px;
 }
 
 .avatarBlock {
