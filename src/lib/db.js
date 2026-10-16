@@ -131,6 +131,11 @@ export const fetchCountPostFromDBById = cache(async (userId) => {
 
 // users
 
+export const updateUserRoleInDB = async (role, email) => {
+    const [rows] = await pool.execute('UPDATE users SET role = ? WHERE email = ?', [role, email])
+    return { success: true}
+}
+
 
 export const getTeacherEmailsFromDB = cache(async () => {
     const [rows] = await pool.execute('SELECT * FROM teacher_emails')

@@ -84,7 +84,7 @@ const Profile = () => {
                         {provider === 'google' ? '' : <ChangeAvatar onAvatarChange={onAvatarChange} />}
                     </div>
                     <h1 className={styles.username}> {user?.name}</h1>
-                    <h2 className={styles.userId}> id: {user?.id}  {/* {session.user.role && <p> {session.user.role}</p>} */} </h2>
+                    <h2 className={styles.userId}> id: {user?.id}  {session.user.role && <p> {session.user.role}</p>}  </h2>
                     <div className={styles.buttonContainer}>
                         <button className={styles.signOutButton} onClick={() => signOut({
                             callbackUrl: '/signin'

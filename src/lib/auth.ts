@@ -1,7 +1,7 @@
 import type { AuthOptions, User } from "next-auth";
 import GoogleProvider from 'next-auth/providers/google'
 import Credentials from "next-auth/providers/credentials";
-import { getUserFromDBByEmail, createGoogleUserInDB, getTeacherEmailsFromDB } from '@/lib/db'
+import { getUserFromDBByEmail, createGoogleUserInDB, getTeacherEmailsFromDB, updateUserRoleInDB } from '@/lib/db'
 import { compare } from 'bcryptjs'
 import { loginSchema } from '@/lib/zod'
 import { headers } from 'next/headers'
@@ -46,14 +46,19 @@ export const authConfig: AuthOptions = {
                 if (!currentUser) {
                     throw new Error("UserNotFound")
                 }
+                const cleanEmail = email ? email.trim().toLowerCase() : ""
 
                 const isTeacher = teacherEmails.some((t: any) =>
                     (typeof t === 'string' ? t : t.email).toLowerCase() === cleanEmail
                 )
 
-                currentUser.role = isTeacher ? 'teacher' : 'student'
+                const targetRole = isTeacher ? 'teacher' : 'student'
 
-                const cleanEmail = email ? email.trim().toLowerCase() : ""
+                if (currentUser.role !== targetRole) {
+                    await updateUserRoleInDB(targetRole, cleanEmail!)
+                    currentUser.role = targetRole
+                }
+
 
 
 
@@ -146,7 +151,14 @@ export const authConfig: AuthOptions = {
                         const isTeacher = teacherEmails.some((t: any) =>
                             (typeof t === 'string' ? t : t.email).toLowerCase() === user.email?.toLowerCase()
                         )
-                        token.role = isTeacher ? 'teacher' : 'student'
+                        const targetRole = isTeacher ? 'teacher' : 'student'
+
+
+                        if (dbUser.role !== targetRole) {
+                            await updateUserRoleInDB(targetRole, user.email!)
+                        }
+
+                        token.role = targetRole
 
                     }
                 } else {
