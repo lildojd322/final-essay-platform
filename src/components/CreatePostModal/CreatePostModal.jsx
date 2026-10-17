@@ -84,25 +84,25 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
     return (
         <div onMouseDown={handleOverlayClick} className={styles.overlay} >
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                <h1 className={styles.h1}>Create post</h1>
+                <h1 className={styles.h1}>создать задание</h1>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     {error && <div className={styles.error}>{error}</div>}
                     <input
                         type="text"
                         name="title"
-                        placeholder="title"
+                        placeholder="название"
                         required
                         className={styles.input}
 
                     />
                     <textarea
                         name="description"
-                        placeholder="description"
+                        placeholder="описание"
                         required
                         className={styles.textarea}
                     />
                     <button disabled={isPending} type="submit" className={styles.submitButton}>
-                        create
+                        создать
                     </button>
                 </form>
             </div>

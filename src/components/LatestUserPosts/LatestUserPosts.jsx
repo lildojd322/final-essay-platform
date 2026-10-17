@@ -33,11 +33,11 @@ const LatestUserPosts = ({ id, name }) => {
             {latestPosts.length > 0 ? (
                 <>
                     <div className={styles.postsInfo} >
-                        <h2 >   total posts: {countPosts}</h2>
-                        {countPosts > 3 && <Link href={`/blog?userId=${id}&name=${encodeURIComponent(name)}`} style={{ color: 'var(--primary)', textDecoration: 'underline', fontSize: '18px' }} > show all </Link>}
+                        <h2 >   всего заданий: {countPosts}</h2>
+                        {countPosts > 3 && <Link href={`/blog?userId=${id}&name=${encodeURIComponent(name)}`} style={{ color: 'var(--primary)', textDecoration: 'underline', fontSize: '18px' }} >показать все</Link>}
                     </div>
                     <h1 className={styles.nameLatestTitle} style={{ marginTop: '10px' }}>
-                        {`${name}'s`} latest posts
+                        {`${name}`} последние задания
 
                     </h1>
 
@@ -51,7 +51,7 @@ const LatestUserPosts = ({ id, name }) => {
                                 </div>
                                 <div className={styles.postMeta}>
                                     <span className={styles.date}>
-                                        {new Date(post.created_at).toLocaleDateString('en-EN')}
+                                        {new Date(post.created_at).toLocaleDateString('ru-RU')}
                                     </span>
                                 </div>
                             </li>
@@ -61,7 +61,7 @@ const LatestUserPosts = ({ id, name }) => {
                 </>
             ) : (
                 <h1 className={styles.haventPosts}>
-                    {name} haven't posted anything yet
+                    {name} не имеет заданий
                 </h1>
             )}
         </div>

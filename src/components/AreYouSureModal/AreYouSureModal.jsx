@@ -22,13 +22,13 @@ const AreYouSureModal = ({ changeModalStatus, handleClick, }) => {
     return (
         <div onMouseDown={handleOverlayClick} className={styles.overlay} >
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                <h1 className={styles.h1}>Are you sure? </h1>
+                <h1 className={styles.h1}>вы уверены? </h1>
                 <div className={styles.buttonsContainer}> 
                     <button onClick={yes}  type="submit" className={styles.yesButton}>
-                        yes
+                        да
                     </button>
                     <button onClick={no} type="submit" className={styles.noButton}>
-                        no
+                        нет
                     </button>
                 </div>
             </div>

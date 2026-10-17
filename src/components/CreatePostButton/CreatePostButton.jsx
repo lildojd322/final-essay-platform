@@ -32,7 +32,7 @@ const CreatePostButton = () => {
 
             {!isOpen ? '' : <CreatePostModal isOpen={isOpen} changeModalStatus={changeModalStatus} />}
             <button onClick={changeModalStatus} className={styles.button}>
-                <span> create post</span>
+                <span> создать задание</span>
                 <span className={styles.icon}>+</span>
             </button>
         </>

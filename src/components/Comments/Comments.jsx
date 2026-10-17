@@ -56,7 +56,7 @@ const Comments = ({ id, author }) => {
 
         const validation = commentSchema.safeParse(data)
         if (!validation.success) {
-            const firstError = validation.error.issues[0]?.message || 'Validation error'
+            const firstError = validation.error.issues[0]?.message || 'ошибка валидации'
             setError(firstError)
             return
         }
@@ -70,7 +70,7 @@ const Comments = ({ id, author }) => {
                 body: JSON.stringify(data)
             })
             
-            if (!res.ok) throw new Error('Server error')
+            if (!res.ok) throw new Error('ошибка сервера')
             
 
             await loadComments()
@@ -79,7 +79,7 @@ const Comments = ({ id, author }) => {
             
         } catch (err) {
             console.error(err)
-            setError('Failed to create comment')
+            setError('Не удалось создать комментарий')
         } finally {
             setIsSubmitting(false)
         }
@@ -91,21 +91,21 @@ const Comments = ({ id, author }) => {
                 method: 'DELETE',
             })
             
-            if (!res.ok) throw new Error('Delete failed')
+            if (!res.ok) throw new Error('ошибка удаления')
     
             await loadComments()
             
         } catch (error) {
             console.error(error)
-            setError('Failed to delete comment')
+            setError('Не удалось удалить комментарий')
         }
     }
 
-    if (loading) return <div>Loading...</div>
+    if (loading) return <div>загрузка...</div>
 
     return (
         <div className={styles.discussionContainer}>
-            <h1>discussion</h1>
+            <h1>обсуждение</h1>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             
             <CreateCommentForm 
@@ -114,7 +114,7 @@ const Comments = ({ id, author }) => {
             />
             
             <div className={styles.commentsSection}>
-                <h2>Total comments: {countComments}</h2>
+                <h2>всего комментариев: {countComments}</h2>
                 <ul className={styles.commentsList}>
                     {comments.length > 0 ? (
                         comments.map((comment) => (
@@ -139,7 +139,7 @@ const Comments = ({ id, author }) => {
                                             </div>
                                         </Link>
                                         <div className={styles.commentCreated}>
-                                            {new Date(comment.created_at).toLocaleDateString('en-EN', { 
+                                            {new Date(comment.created_at).toLocaleDateString('ru-RU', { 
                                                 day: 'numeric', 
                                                 month: 'long', 
                                                 year: 'numeric', 
@@ -153,7 +153,7 @@ const Comments = ({ id, author }) => {
                                             onClick={() => handleDelete(comment.comment_id)} 
                                             className={styles.deleteButton}
                                         >
-                                            delete
+                                            удалить
                                         </button>
                                     )}
                                 </div>
@@ -179,7 +179,7 @@ const Comments = ({ id, author }) => {
                             </li>
                         ))
                     ) : (
-                        <h2 style={{ fontStyle: 'italic' }}>no comments</h2>
+                        <h2 style={{ fontStyle: 'italic' }}>комментариев пока нет</h2>
                     )}
                 </ul>
             </div>

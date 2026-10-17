@@ -43,14 +43,14 @@ const Answer = ({ handleAction, parentId }) => {
             {isOpen ? <form onSubmit={handleSubmit} className={styles.answerForm}>
                 <textarea onKeyDown={handleKeyDown} value={text} onChange={(e) => {
                     setText(e.target.value)
-                }} autoFocus ref={areaRef} className={styles.textarea} name="comment_text" type="text" placeholder="leave a answer"></textarea>
+                }} autoFocus ref={areaRef} className={styles.textarea} name="comment_text" type="text" placeholder="текст ответа"></textarea>
                 <div>
-                    <button onClick={handleClick} type='click' className={styles.cancelAnswerButton}>cancel</button>
-                    <button disabled={!text.trim()} type='submit' className={styles.sendAnswerButton}> send</button>
+                    <button onClick={handleClick} type='click' className={styles.cancelAnswerButton}>отменить</button>
+                    <button disabled={!text.trim()} type='submit' className={styles.sendAnswerButton}> отправить</button>
 
                 </div>
 
-            </form> : <button onClick={handleClick} className={styles.button}>Answer</button>}
+            </form> : <button onClick={handleClick} className={styles.button}>ответить</button>}
 
 
         </>

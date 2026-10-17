@@ -28,7 +28,7 @@ const EmailConfirmForm = () => {
         setError("")
 
         if (code.length !== 6) {
-            setError("Please enter all 6 digits.")
+            setError("код должен содержать 6 цифр")
             return
         }
 
@@ -52,14 +52,14 @@ const EmailConfirmForm = () => {
                 redirect: false
             })
             if (loginResult?.error) {
-                setError("Authorization failed. Please try logging in manually.")
+                setError("ошибка авторизации, попробуйте позже")
                 setIsPending(false)
             } else {
                 router.push("/")
                 router.refresh()
             }
         } else {
-            setError(data.error || "Incorrect code.")
+            setError(data.error || "некорректный код")
         }
     }
 
@@ -69,7 +69,7 @@ const EmailConfirmForm = () => {
                 <div className={styles.header}>
                     <h1 className={styles.title}>Verify Your Email</h1>
                     <p className={styles.subtitle}>
-                        We have sent a 6-digit confirmation code to <strong>{email}</strong>. Please enter it below to activate your account.
+                        Мы отправили 6-значный код подтверждения на <strong>{email}</strong>.Пожалуйста, введите это ниже, чтобы активировать свою учетную запись.
                     </p>
                 </div>
 
@@ -98,7 +98,7 @@ const EmailConfirmForm = () => {
                         type="submit"
                         isPending={isPending}
                     >
-                        check the code
+                      проверить
                     </button>
                 </form>
             </div>

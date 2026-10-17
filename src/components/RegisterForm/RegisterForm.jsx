@@ -42,21 +42,20 @@ const RegisterForm = () => {
             router.push(`/emailConfirm`)
         } else {
             const result = await response.json()
-            setError(result.error || 'Registration failed')
+            setError(result.error || 'ошибка регистрации')
         }
     }
 
     return (
         <>
-            {isSuccess ? <h2>We have sent an email to your email address. Please check and confirm your email!</h2> : (<>
-                <h1 className={styles.h1}>Register account</h1>
+            {isSuccess ? <h2>Мы отправили письмо на вашу электронную почту, проверьте ее.</h2> : (<>
+                <h1 className={styles.h1}>Регистрация</h1>
                 <form onSubmit={handleSubmit} className={styles.form}>
                     {error && <div className={styles.error}>{error}</div>}
                     <input
                         type="text"
                         name="name"
                         placeholder="name"
-
                         required
                         className={styles.input}
                     />
@@ -84,7 +83,7 @@ const RegisterForm = () => {
                         className={styles.input}
                     />
                     <button type="submit" className={styles.submitButton}>
-                        Register
+                        зарегистрироваться
                     </button>
                 </form>
 

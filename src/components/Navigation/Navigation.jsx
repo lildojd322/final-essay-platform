@@ -62,7 +62,7 @@ const Navigation = ({ navLinks }) => {
                             </Link>
                         )}
                         {session.status === 'unauthenticated' && (
-                            <Link onClick={closeMenu} href="/api/auth/signin" className={styles.signInButtonIntoBurger}>sign in</Link>
+                            <Link onClick={closeMenu} href="/api/auth/signin" className={styles.signInButtonIntoBurger}>войти</Link>
                         )}
                         {navLinks.map(link => {
                             const isActive = pathname === link.href
@@ -96,7 +96,7 @@ const Navigation = ({ navLinks }) => {
                         </Link>
                     )}
                     {session.status === 'unauthenticated' && (
-                        <Link href="/api/auth/signin" className={styles.signInButton}>sign in</Link>
+                        <Link href="/api/auth/signin" className={styles.signInButton}>войти</Link>
                     )}
                     <SwitchTheme />
                 </div></>}

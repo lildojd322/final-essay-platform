@@ -34,11 +34,11 @@ const Blog = async ({ searchParams }) => {
 
     let infoWord
     if (name) {
-        infoWord = `${name}'s total posts:`
+        infoWord = `${name} задания:`
     } else if (keyword) {
-        infoWord = 'posts found:'
+        infoWord = 'найдено заданий:'
     } else {
-        infoWord = 'total posts: '
+        infoWord = 'всего заданий: '
     }
 
     return (

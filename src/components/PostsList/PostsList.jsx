@@ -91,7 +91,7 @@ const PostsList = (props) => {
                         <div className={styles.postMeta}>
                             <span className={styles.author}>{post.author_name}</span>
                             <span className={styles.date}>
-                                {new Date(post.created_at).toLocaleDateString('en-EN')}
+                                {new Date(post.created_at).toLocaleDateString('ru-RU')}
                             </span>
                         </div>
                     </li>
@@ -99,7 +99,7 @@ const PostsList = (props) => {
             </ul>
             {currentHasMore && (
                 <div ref={triggerRef} className={styles.loadingTrigger} style={{ height: '30px', textAlign: 'center' }}>
-                    {loading && <span style={{ display: 'block', fontWeight: '600', }}>Loading...</span>}
+                    {loading && <span style={{ display: 'block', fontWeight: '600', }}>загрузка...</span>}
                 </div>
             )}
         </>

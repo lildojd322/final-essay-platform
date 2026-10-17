@@ -27,12 +27,12 @@ const SearchPost = () => {
         <form onSubmit={handleSubmit} className={styles.searchForm}>
             <input
                 className={styles.searchInput}
-                placeholder="Search posts..."
+                placeholder="найти задания"
                 onChange={(e) => setSearchTerm(e.target.value)}
                 type="text"
                 value={searchTerm}
             />
-            <button type="submit" className={styles.searchButton}>Search</button>
+            <button type="submit" className={styles.searchButton}>найти</button>
         </form>
     )
 }

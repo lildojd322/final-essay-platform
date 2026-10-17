@@ -46,7 +46,7 @@ const SignInForm = () => {
                 router.refresh()
             }
         } catch (err) {
-            setError('Failed to connect to server')
+            setError('ошибка подключения к серверу')
         } finally {
             setIsPending(false)
         }
@@ -72,7 +72,7 @@ const SignInForm = () => {
                 className={styles.input}
             />
             <button type="submit" disabled={!!isPending} className={styles.submitButton}>
-                Sign in
+                войти
             </button>
         </form>
     )

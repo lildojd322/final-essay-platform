@@ -8,7 +8,7 @@ const LoadingPosts = () => {
             <SearchPost />
 
 
-            <h2 className='info-word'>  total posts: ... </h2>
+            <h2 className='info-word'>  всего заданий: ... </h2>
 
             {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="post-skeleton">

@@ -31,7 +31,7 @@ const MainLatestPosts = () => {
     if (loading) return <LoadingLatestsPosts />
 
     if (posts.length === 0) {
-        return <div>No posts found</div>
+        return <div>задания не найдены</div>
     }
 
     return (
@@ -45,7 +45,7 @@ const MainLatestPosts = () => {
                             <div className={styles.postMeta}>
                                 <span className={styles.author}>{post.author_name}</span>
                                 <span className={styles.date}>
-                                    {new Date(post.created_at).toLocaleDateString('en-EN')}
+                                    {new Date(post.created_at).toLocaleDateString('ru-RU')}
                                 </span>
                             </div>
 

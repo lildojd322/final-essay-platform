@@ -10,13 +10,13 @@ import Comments from '../Comments/Comments'
 const Post = async ({ post, user }) => {
     const session = await getServerSession(authConfig)
 
-    const authorName = user?.name || 'Deleted user'
+    const authorName = user?.name || 'удаленный аккаунт'
     const authorImage = user?.image || defaultImage.src
     const isDeleted = !user
 
 
 
-    const formattedDate = new Date(post.created_at).toLocaleDateString('en-EN', {
+    const formattedDate = new Date(post.created_at).toLocaleDateString('ru-RU', {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
@@ -35,7 +35,7 @@ const Post = async ({ post, user }) => {
                 <p className={styles.body}>{post.body}</p>
 
                 {isDeleted ? (
-                    <pre className={styles.deletedUser}>Deleted user</pre>
+                    <pre className={styles.deletedUser}>удаленный аккаунт</pre>
                 ) : (
                     <Link href={`/user/${user.id}`} className={styles.authorLink}>
                         <pre className={styles.authorName}>{authorName}</pre>
@@ -43,8 +43,8 @@ const Post = async ({ post, user }) => {
                     </Link>
                 )}
 
-                <pre className={styles.meta}>created: {formattedDate}</pre>
-                {String(session?.user?.id) === String(user?.id) && <DeleteButton postId={post.id}> delete post </DeleteButton>}
+                <pre className={styles.meta}>создано: {formattedDate}</pre>
+                {String(session?.user?.id) === String(user?.id) && <DeleteButton postId={post.id}> удалить задание</DeleteButton>}
             </div>
             <Comments author={user} id={post.id} />
         </>

@@ -29,7 +29,7 @@ const UserProfile = ({ user }) => {
             />
 
             <h1 className={styles.name}>{user.name}</h1>
-            <h2 className={styles.userId}> id: {user?.id}  {user.role && <p> {user.role}</p>} </h2>
+            <h2 className={styles.userId}> id: {user?.id}  {user?.role === 'teacher' ? <p> учитель</p> : <p> ученик</p>} </h2>
             <LatestUserPosts id={user.id} name={user.name} />
 
         </div>

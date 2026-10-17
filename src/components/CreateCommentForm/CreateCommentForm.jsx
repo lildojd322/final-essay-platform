@@ -38,13 +38,13 @@ const CreateCommentForm = ({ handleAction }) => {
                 value={text}
                 onChange={(e) => {
                     setText(e.target.value)
-                }} onKeyDown={handleKeyDown} name="comment_text" type="text" placeholder="leave a comment"></textarea>
+                }} onKeyDown={handleKeyDown} name="comment_text" type="text" placeholder="оставить комментарий"></textarea>
             <button
                 disabled={!text.trim()}
                 type="submit"
 
             >
-                Send
+                отправить
             </button>
         </form>
     )
