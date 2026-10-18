@@ -13,7 +13,7 @@ export async function DELETE(request) {
 
 
         if (!session.user) {
-            return NextResponse.json({ error: "The user is not authorized" }, { status: 401 })
+            return NextResponse.json({ error: "Пользователь не авторизован" }, { status: 401 })
         }
 
 
@@ -27,25 +27,25 @@ export async function DELETE(request) {
         if (!validation.success) {
 
             console.log("backend Zod error:", validation.error.format())
-            return NextResponse.json({ error: "Invalid data format" }, { status: 400 })
+            return NextResponse.json({ error: "Неверный формат данных" }, { status: 400 })
         }
         const { id } = validation.data
 
         const currentComment = await fetchCommentFromDBById(id)
 
         if (String(currentComment.user_id) !== String(session.user.id)) {
-            return NextResponse.json({ error: "wrong user" }, { status: 403 })
+            return NextResponse.json({ error: "не тот пользователь" }, { status: 403 })
         }
 
         await deleteCommentById(id)
         return NextResponse.json({
-            message: "comments deleted successfully",
+            message: "комментарии успешно удалены",
             success: true,
 
         }, { status: 200 })
     } catch (error) {
 
-        return NextResponse.json({ error: "Internal Server Error", details: error.message }, { status: 500 })
+        return NextResponse.json({ error: "Внутренняя ошибка сервера", details: error.message }, { status: 500 })
     }
 
 

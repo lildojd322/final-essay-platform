@@ -17,7 +17,7 @@ export async function GET(request) {
 
 
     if (!limitOffsetValidation.success) {
-        return NextResponse.json({ error: "Invalid pagination" }, { status: 400 })
+        return NextResponse.json({ error: "Некорректная пагинация" }, { status: 400 })
     }
 
     const { limit, offset } = limitOffsetValidation.data
@@ -37,7 +37,7 @@ export async function GET(request) {
 
     if (!keywordValidation.success) {
         return NextResponse.json({
-            error: "Invalid keyword format"
+            error: "Неверный формат ключевого слова"
         }, { status: 400 })
     }
 
@@ -56,6 +56,6 @@ export async function GET(request) {
         return NextResponse.json(posts)
     } catch (error) {
         console.error(error)
-        return NextResponse.json({ error: "db error" }, { status: 500 })
+        return NextResponse.json({ error: "ошибка базы данных" }, { status: 500 })
     }
 }

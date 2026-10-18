@@ -10,7 +10,7 @@ export async function POST(request) {
 
 
         if (!email || !code) {
-            return NextResponse.json({ success: false, error: 'Missing data.' }, { status: 400 })
+            return NextResponse.json({ success: false, error: 'Отсутствующие данные.' }, { status: 400 })
         }
         const cleanEmail = email.trim().toLowerCase()
 
@@ -18,7 +18,7 @@ export async function POST(request) {
 
         const savedCode = rawSavedCode ? String(rawSavedCode) : null
         if (!savedCode || savedCode !== code.trim()) {
-            return NextResponse.json({ success: false, error: 'Invalid or expired code.' }, { status: 400 })
+            return NextResponse.json({ success: false, error: 'Неверный или истекший код.' }, { status: 400 })
         }
 
         await redis.del(`auth_code:${cleanEmail}`)
@@ -40,7 +40,7 @@ export async function POST(request) {
 
 
     } catch (error) {
-        return NextResponse.json({ success: false, error: 'Internal Server Error' }, { status: 500 })
+        return NextResponse.json({ success: false, error: 'Внутренняя ошибка сервера' }, { status: 500 })
     }
 
 }

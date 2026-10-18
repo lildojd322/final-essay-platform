@@ -17,7 +17,7 @@ export async function POST(request) {
 
         if (!savedToken || savedToken !== token) {
             return NextResponse.json(
-                { success: false, error: "The link or token has expired. Please try again." },
+                { success: false, error: "Срок действия ссылки или токена истек. Пожалуйста, попробуйте еще раз." },
                 { status: 400 }
             )
         }
@@ -31,7 +31,7 @@ export async function POST(request) {
 
         return NextResponse.json({
             success: true,
-            message: "Password updated successfully"
+            message: "Пароль успешно обновлен"
         })
 
     } catch (error) {
@@ -42,7 +42,7 @@ export async function POST(request) {
         }
 
 
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
+        return NextResponse.json({ error: "Внутренняя ошибка сервера" }, { status: 500 })
     }
 
 

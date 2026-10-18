@@ -15,24 +15,24 @@ export async function POST(request) {
         const session = await getServerSession(authConfig)
 
         if (!session?.user?.email) {
-            return NextResponse.json({ error: 'Not authorized' }, { status: 401 })
+            return NextResponse.json({ error: 'Не авторизован' }, { status: 401 })
         }
 
         const formData = await request.formData()
         const file = formData.get('avatar')
 
         if (!file) {
-            return NextResponse.json({ error: 'No file' }, { status: 400 })
+            return NextResponse.json({ error: 'Файл отсутствует' }, { status: 400 })
         }
 
         const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
 
         if (!allowedTypes.includes(file.type)) {
-            return NextResponse.json({ error: 'JPG, PNG or WebP only' }, { status: 400 })
+            return NextResponse.json({ error: 'Только JPG, PNG или WebP' }, { status: 400 })
         }
 
         if (file.size > 5 * 1024 * 1024) {
-            return NextResponse.json({ error: 'File too large (max 5MB)' }, { status: 400 })
+            return NextResponse.json({ error: 'Файл слишком большой (макс. 5 МБ)' }, { status: 400 })
         }
 
         const bytes = await file.arrayBuffer()
@@ -59,6 +59,6 @@ export async function POST(request) {
 
     } catch (error) {
         console.error('Upload error:', error)
-        return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
+        return NextResponse.json({ error: 'Не удалось загрузить' }, { status: 500 })
     }
 }

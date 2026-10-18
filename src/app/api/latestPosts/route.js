@@ -13,7 +13,7 @@ export async function GET(request) {
     } catch (error) {
         console.error("Database error:", error)
         return NextResponse.json({
-            error: "Internal Server Error",
+            error: "Внутренняя ошибка сервера",
             details: error.message
         }, { status: 500 })
     }

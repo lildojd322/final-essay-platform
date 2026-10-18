@@ -15,7 +15,7 @@ export const GET = async (request) => {
         if (!validation.success) {
 
             console.log("backend Zod error:", validation.error.format())
-            return NextResponse.json({ error: "Invalid id format" }, { status: 400 })
+            return NextResponse.json({ error: "Неверный формат данных" }, { status: 400 })
         }
         const userId = validation.data.id
 
@@ -26,7 +26,7 @@ export const GET = async (request) => {
         const data = [posts, countPosts]
 
         return NextResponse.json({
-            message: "post fetched successfully",
+            message: "публикация успешно получена",
             success: true,
             data: {
                 posts: posts,
@@ -35,6 +35,6 @@ export const GET = async (request) => {
         }, { status: 200 })
     } catch (error) {
 
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
+        return NextResponse.json({ error: "Внутренняя ошибка сервера" }, { status: 500 })
     }
 }

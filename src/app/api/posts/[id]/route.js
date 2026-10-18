@@ -12,7 +12,7 @@ export async function DELETE(request, { params }) {
         const session = await getServerSession(authConfig)
 
         if (!session.user) {
-            return NextResponse.json({ error: "The user is not authorized" }, { status: 401 })
+            return NextResponse.json({ error: "Пользователь не авторизован" }, { status: 401 })
         }
 
 
@@ -24,7 +24,7 @@ export async function DELETE(request, { params }) {
         if (!validation.success) {
 
             console.log("backend Zod error:", validation.error.format())
-            return NextResponse.json({ error: "Invalid id format" }, { status: 400 })
+            return NextResponse.json({ error: "Неверный формат идентификатора" }, { status: 400 })
         }
         const id = Number(validation.data.id)
 
@@ -37,7 +37,7 @@ export async function DELETE(request, { params }) {
 
 
         if (String(session.user.id) !== String(post.userId)) {
-            return NextResponse.json({ error: "wrong user" }, { status: 403 })
+            return NextResponse.json({ error: "не тот пользователь" }, { status: 403 })
         }
 
 

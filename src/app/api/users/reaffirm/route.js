@@ -13,7 +13,7 @@ export async function POST(request) {
 
         const user = await getUserFromDBByEmail(email)
         if (!user) {
-            return NextResponse.json({ error: "Incorrect email or password" }, { status: 400 })
+            return NextResponse.json({ error: "Неверный адрес электронной почты или пароль" }, { status: 400 })
         }
         if (!user?.password) {
             return NextResponse.json({
@@ -31,7 +31,7 @@ export async function POST(request) {
         )
 
         if (!isPasswordCorrect) {
-            return NextResponse.json({ error: "Incorrect email or password" }, { status: 400 })
+            return NextResponse.json({ error: "Неверный адрес электронной почты или пароль" }, { status: 400 })
         }
 
         await sendCodeMailToUserEmail(email, name)
@@ -50,7 +50,7 @@ export async function POST(request) {
         }
 
 
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
+        return NextResponse.json({ error: "Внутренняя ошибка сервера" }, { status: 500 })
     }
 
 

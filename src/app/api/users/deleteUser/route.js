@@ -10,7 +10,7 @@ export async function DELETE(request) {
     try {
         console.log(session.user)
         if (!session.user) {
-            return NextResponse.json({ error: "The user is not authorized" }, { status: 401 })
+            return NextResponse.json({ error: "Пользователь не авторизован" }, { status: 401 })
         }
 
         const { searchParams } = new URL(request.url)
@@ -23,7 +23,7 @@ export async function DELETE(request) {
         if (!validation.success) {
 
             console.log("backend Zod error:", validation.error.format())
-            return NextResponse.json({ error: "Invalid data format" }, { status: 400 })
+            return NextResponse.json({ error: "Неверный формат данных" }, { status: 400 })
         }
         const { id } = validation.data
 
@@ -31,20 +31,20 @@ export async function DELETE(request) {
         console.log(currentUser)
 
         if (Number(currentUser.id) !== Number(session.user.id)) {
-            return NextResponse.json({ error: "wrong user" }, { status: 403 })
+            return NextResponse.json({ error: "не тот пользователь" }, { status: 403 })
         }
 
         const result = await deleteUserById(Number(id))
         console.log('Result:', result)
 
         return NextResponse.json({
-            message: "comments deleted successfully",
+            message: "комментарии успешно удалены",
             success: true,
 
         }, { status: 200 })
     } catch (error) {
 
-        return NextResponse.json({ error: "Internal Server Error", details: error.message }, { status: 500 })
+        return NextResponse.json({ error: "Внутренняя ошибка сервера", details: error.message }, { status: 500 })
     }
 
 

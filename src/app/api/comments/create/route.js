@@ -16,7 +16,7 @@
             if (!validation.success) {
 
                 console.log("backend Zod error:", validation.error.format())
-                return NextResponse.json({ error: "Invalid data format" }, { status: 400 })
+                return NextResponse.json({ error: "Неверный формат данных" }, { status: 400 })
             }
 
             const { post_id: postId, comment_text: commentText, parent_comment_id: parentId = null } = validation.data
@@ -25,7 +25,7 @@
             const session = await getServerSession(authConfig)
 
             if (!session) {
-                return NextResponse.json({ error: "The user is not authorized" }, { status: 401 })
+                return NextResponse.json({ error: "Пользователь не авторизован" }, { status: 401 })
             }
 
             const userId = session.user.id
@@ -37,13 +37,13 @@
 
 
             return NextResponse.json({
-                message: "Comment created successfully",
+                message: "Комментарий успешно создан",
                 success: true,
 
             }, { status: 200 })
         } catch (error) {
 
-            return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
+            return NextResponse.json({ error: "Внутренняя ошибка сервера" }, { status: 500 })
         }
 
 

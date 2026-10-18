@@ -14,7 +14,7 @@ export async function GET(request) {
         if (!validation.success) {
 
             console.log("backend Zod error:", validation.error.format())
-            return NextResponse.json({ error: "Invalid data format" }, { status: 400 })
+            return NextResponse.json({ error: "Неверный формат данных" }, { status: 400 })
         }
         const { id } = validation.data
 
@@ -25,7 +25,7 @@ export async function GET(request) {
 
 
         return NextResponse.json({
-            message: "comments fetched successfully",
+            message: "комментарии успешно получены",
             success: true,
             data: {
                 comments: comments,
@@ -34,7 +34,7 @@ export async function GET(request) {
         }, { status: 200 })
     } catch (error) {
 
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
+        return NextResponse.json({ error: "Внутренняя ошибка сервера" }, { status: 500 })
     }
 
 

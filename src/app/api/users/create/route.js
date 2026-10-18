@@ -35,10 +35,10 @@ export async function POST(request) {
         }
 
         if (error.code === 'ER_DUP_ENTRY' || error.errno === 1062) {
-            return NextResponse.json({ error: "Email already exists" }, { status: 400 })
+            return NextResponse.json({ error: "Электронный адрес уже существует" }, { status: 400 })
         }
 
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
+        return NextResponse.json({ error: "Внутренняя ошибка сервера" }, { status: 500 })
     }
 
 

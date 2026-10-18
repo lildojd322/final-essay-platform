@@ -10,7 +10,7 @@ import { getServerSession } from "next-auth/next"
 export const POST = async (request) => {
     const session = await getServerSession(authConfig)
     if (!session) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        return NextResponse.json({ error: "неавторизован" }, { status: 401 });
     }
     try {
 
@@ -29,7 +29,7 @@ export const POST = async (request) => {
 
         const result = await forwardPostToDB(title, description, userEmail, userName, userId)
         return NextResponse.json({
-            message: "post created successfully",
+            message: "публикация успешно создана",
             success: true,
             id: result.id
         }, { status: 201 })
@@ -40,7 +40,7 @@ export const POST = async (request) => {
             return NextResponse.json({ error: error.issues[0].message }, { status: 400 })
         }
 
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
+        return NextResponse.json({ error: "Внутренняя ошибка сервера" }, { status: 500 })
     }
 }
 
