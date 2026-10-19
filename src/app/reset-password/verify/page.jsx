@@ -25,7 +25,7 @@ const Verify = () => {
     setError("")
 
     if (code.length !== 6) {
-      setError("Please enter all 6 digits.")
+      setError("Пожалуйста, введите все 6 цифр.")
       return
     }
 
@@ -47,7 +47,7 @@ const Verify = () => {
       }
     } catch (err) {
       setIsPending(false)
-      setError("Something went wrong. Please try again.")
+      setError("Что-то пошло не так. Пожалуйста, попробуйте ещё раз.")
     }
   }
 
@@ -57,8 +57,8 @@ const Verify = () => {
         <div className={styles.header}>
           <h1 className={styles.title}>Verify Your Email</h1>
           <p className={styles.subtitle}>
-            We have sent a 6-digit confirmation code to <strong>{email}</strong>. 
-            Please enter it below to activate your account.
+           Мы отправили 6-значный код подтверждения на адрес <strong>{email}</strong>. 
+            Пожалуйста, введите его ниже, чтобы активировать свою учетную запись.
           </p>
         </div>
 

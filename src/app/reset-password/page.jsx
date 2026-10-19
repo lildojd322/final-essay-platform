@@ -35,7 +35,7 @@ const resetPassword = () => {
             const resData = await response.json()
 
             if (!response.ok) {
-                setError(resData.error || 'Something went wrong')
+                setError(resData.error || 'Что-то пошло не так')
                 setIsPending(false)
                 return
             }
@@ -45,7 +45,7 @@ const resetPassword = () => {
                 router.refresh()
             }
         } catch (err) {
-            setError('Failed to connect to server')
+            setError('Не удалось подключиться к серверу')
             setIsPending(false)
         }
 
@@ -60,7 +60,7 @@ const resetPassword = () => {
                 <input placeholder="Email"
                     required className={styles.input} type="email" name="email" />
 
-                <button type='submit' className={styles.submitButton}>confirm</button>
+                <button type='submit' className={styles.submitButton}>подтвердить</button>
                 {error && <p className={styles.error}>{error}</p>}
             </div>
 

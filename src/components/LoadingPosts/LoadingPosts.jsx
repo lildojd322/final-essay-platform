@@ -4,7 +4,7 @@ import CreatePostButton from '../components/CreatePostButton/CreatePostButton'
 const LoadingPosts = () => {
     return (
         <div className="blog-container">
-            <h1>BLOG</h1>
+
             <SearchPost />
 
 

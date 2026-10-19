@@ -19,15 +19,15 @@ const Signin = async () => {
 
             <GoogleButton />
             <div>
-                <p className="signOr">or sign in with email</p>
+                <p className="signOr">или войдите с помощью электронной почты</p>
             </div>
             <SignInForm />
             <div className="authFooter">
                 <p>
-                    Don't have an account? <Link href='/register'>Register right now</Link>
+                    Нет аккаунта?<Link href='/register'>Зарегистрируйтесь прямо сейчас</Link>
                 </p>
                 <p>
-                    <Link href='/reset-password'>forgot your password?</Link>
+                    <Link href='/reset-password'>Забыли пароль?</Link>
                 </p>
             </div>
         </div>

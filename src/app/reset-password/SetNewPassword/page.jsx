@@ -64,7 +64,7 @@ const ComponentName = () => {
 
             if (!response.ok) {
                 console.log("ОШИБКА ОТ БЭКЕНДА:", resData);
-                setError(resData.error || 'Something went wrong')
+                setError(resData.error || 'Что-то пошло не так')
                 setIsPending(false)
                 return
             }
@@ -74,7 +74,7 @@ const ComponentName = () => {
                 redirect: false
             })
             if (loginResult?.error) {
-                setError("Authorization failed. Please try logging in manually.")
+                setError("Авторизация не удалась. Пожалуйста, попробуйте войти в систему вручную.")
                 setIsPending(false)
             } else {
                 sessionStorage.removeItem('pending_verification_email')
@@ -86,7 +86,7 @@ const ComponentName = () => {
 
         } catch (error) {
             setIsPending(false)
-            setError('Failed to connect to server')
+            setError('Не удалось подключиться к серверу')
         }
 
 
@@ -108,7 +108,7 @@ const ComponentName = () => {
                     id="repeatPassword"
                     placeholder="••••••••"
                     required />
-                <button className={styles.button} type="submit" disabled={isPending}    > confirm</button>
+                <button className={styles.button} type="submit" disabled={isPending}    > подтвердить </button>
 
             </form>
         </div>

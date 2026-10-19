@@ -2,7 +2,7 @@
 const ErrorPage = ({ error }) => {
     return (
         <div className="error-container">
-            <h2>ERROR!</h2>
+            <h2>ошибка!</h2>
             <p>{error.message}</p>
 
         </div>

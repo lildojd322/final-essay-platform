@@ -9,7 +9,7 @@ const Register = () => {
             <RegisterForm />
             <div className="authFooter">
                 <p>
-                    Already have an account? <Link href='/signin'>Sign in </Link>
+                    Уже есть аккаунт? <Link href='/signin'>Войдите </Link>
 
                 </p>
             </div>
