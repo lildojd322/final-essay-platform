@@ -133,7 +133,7 @@ export const fetchCountPostFromDBById = cache(async (userId) => {
 
 export const updateUserRoleInDB = async (role, email) => {
     const [rows] = await pool.execute('UPDATE users SET role = ? WHERE email = ?', [role, email])
-    return { success: true}
+    return { success: true }
 }
 
 
@@ -275,23 +275,18 @@ export const getCommentsFromDBByPostId = cache(async (id) => {
             users.image AS author_avatar,
             parent_comment.user_id AS parent_author_id,
             parent_user.name AS parent_author_name
-         FROM comments 
-         LEFT JOIN users ON comments.user_id = users.id
-         LEFT JOIN comments AS parent_comment ON comments.parent_comment_id = parent_comment.comment_id
-         LEFT JOIN users AS parent_user ON parent_comment.user_id = parent_user.id
-         WHERE comments.post_id = ?
-         ORDER BY 
-            CASE 
-                WHEN comments.parent_comment_id IS NULL THEN comments.comment_id 
-                ELSE comments.parent_comment_id 
-            END DESC,
-            comments.parent_comment_id IS NOT NULL ASC, 
+        FROM comments
+        LEFT JOIN users ON comments.user_id = users.id
+        LEFT JOIN comments AS parent_comment ON comments.parent_comment_id = parent_comment.comment_id
+        LEFT JOIN users AS parent_user ON parent_comment.user_id = parent_user.id
+        WHERE comments.post_id = ?
+        ORDER BY 
+            COALESCE(comments.parent_comment_id, comments.comment_id) ASC,
             comments.created_at ASC`,
         [id]
     )
     return rows
 })
-
 export const fetchCommentFromDBById = cache(async (comment_id) => {
     const [rows] = await pool.execute(
         `SELECT * FROM comments 
@@ -310,10 +305,16 @@ export const getCountCommentsFromDBByPostId = cache(async (id) => {
 
 })
 
-export async function forwardCommentToDB(comment_text, post_id, user_id, parent_comment_id) {
+export async function forwardCommentToDB(comment_text, post_id, user_id, parent_comment_id, user_role) {
     await pool.execute(
-        'INSERT INTO comments (comment_text, post_id, user_id, parent_comment_id) VALUES (?, ?, ?, ?)',
-        [comment_text, post_id, user_id, parent_comment_id]
+        'INSERT INTO comments (comment_text, post_id, user_id, parent_comment_id, user_role) VALUES (?, ?, ?, ?, ?)',
+        [
+            comment_text,
+            post_id,
+            user_id,
+            parent_comment_id ?? null,
+            user_role ?? null
+        ]
     )
     return { success: true }
 }

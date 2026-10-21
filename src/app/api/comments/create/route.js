@@ -19,7 +19,7 @@
                 return NextResponse.json({ error: "Неверный формат данных" }, { status: 400 })
             }
 
-            const { post_id: postId, comment_text: commentText, parent_comment_id: parentId = null } = validation.data
+            const { post_id: postId, comment_text: commentText, parent_comment_id: parentId = null, user_role: userRole  } = validation.data
 
 
             const session = await getServerSession(authConfig)
@@ -33,7 +33,7 @@
 
 
             
-            await forwardCommentToDB(commentText, postId, userId, parentId)
+            await forwardCommentToDB(commentText, postId, userId, parentId, userRole)
 
 
             return NextResponse.json({
@@ -42,7 +42,7 @@
 
             }, { status: 200 })
         } catch (error) {
-
+            console.log(error)
             return NextResponse.json({ error: "Внутренняя ошибка сервера" }, { status: 500 })
         }
 

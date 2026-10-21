@@ -22,7 +22,7 @@ export const postSchema = z.object({
 export const commentSchema = z.object({
 
     post_id: z.string().min(1, "Post ID is required"),
-
+    user_role: z.string(),
 
     user_id: z.string().min(1, "User ID is required"),
     parent_comment_id: z.string().nullable().optional().or(z.literal('')),
