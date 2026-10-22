@@ -106,7 +106,7 @@ const Comments = ({ id, author }) => {
     if (loading) return <div>загрузка...</div>
 
 
-    
+
     return (
         <div className={styles.discussionContainer}>
             <h1>обсуждение</h1>
@@ -152,7 +152,8 @@ const Comments = ({ id, author }) => {
                                             })}
                                         </div>
                                         <div className={styles.userRole}>
-                                            {comment.user_role}
+                                            {comment.user_role === 'teacher' ? <p> учитель</p> : <p> ученик</p>}
+
                                         </div>
                                     </div>
                                     {session?.data?.user && String(comment.user_id) === String(session.data.user.id) && (

@@ -180,9 +180,14 @@
 
 
 .userRole {
-    font-size: 0.75rem;
-    color: rgb(182, 142, 43);
+    font-size: 0.85rem;
+
     opacity: 0.6;
+    padding: 2px;
+    border-radius: 5px;
+    color: var(--primary);
+    padding: 1px;
+    background-color: rgba(214, 159, 43, 0.1);
 }
 
 @media (pointer: coarse) {
