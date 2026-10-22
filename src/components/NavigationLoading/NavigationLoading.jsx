@@ -4,7 +4,7 @@ const NavigationLoading = () => {
     return (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', alignItems:'center' }}>
             <nav className={styles.nav} style={{ display: 'flex', gap: '1.833vw', }}>
-                {[1, 2, 3].map(link => (
+                {[1, 2].map(link => (
                     <div key={link} className="skeleton-line" style={{ width: '64px', height: '34x' , margin: '0'}}></div>
                 ))}
             </nav>
