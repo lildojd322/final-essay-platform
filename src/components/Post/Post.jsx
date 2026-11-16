@@ -27,27 +27,43 @@ const Post = async ({ post, user }) => {
 
 
     return (
-        <>
-
-            <div className={styles.postContainer}>
-
+        <div className={styles.pageWrapper}>
+            <article className={styles.taskCard}>
                 <h1 className={styles.title}>{post.title}</h1>
-                <p className={styles.body}>{post.body}</p>
+                <div className={styles.body}>{post.body}</div>
 
-                {isDeleted ? (
-                    <pre className={styles.deletedUser}>удаленный аккаунт</pre>
-                ) : (
-                    <Link href={`/user/${user.id}`} className={styles.authorLink}>
-                        <pre className={styles.authorName}>{authorName}</pre>
-                        <img src={authorImage} className={styles.avatar} alt="avatar" />
-                    </Link>
+                {/*  под будущие фото  */}
+                {post.images?.length > 0 && (
+                    <div className={styles.attachmentsGrid}>
+                        {post.images.map((img, idx) => (
+                            <img key={idx} src={img} alt="Материал к заданию" className={styles.attachmentImage} />
+                        ))}
+                    </div>
                 )}
 
-                <pre className={styles.meta}>создано: {formattedDate}</pre>
-                {String(session?.user?.id) === String(user?.id) && <DeleteButton postId={post.id}> удалить задание</DeleteButton>}
-            </div>
+                <footer className={styles.taskFooter}>
+                    <div className={styles.authorBlock}>
+                        {isDeleted ? (
+                            <span className={styles.deletedUser}>удаленный аккаунт</span>
+                        ) : (
+                            <Link href={`/user/${user.id}`} className={styles.authorLink}>
+                                <img src={authorImage} className={styles.avatar} alt="avatar" />
+                                <span className={styles.authorName}>{authorName}</span>
+                            </Link>
+                        )}
+                    </div>
+
+                    <div className={styles.metaActions}>
+                        <span className={styles.meta}>{formattedDate}</span>
+                        {String(session?.user?.id) === String(user?.id) && (
+                            <DeleteButton postId={post.id}>удалить</DeleteButton>
+                        )}
+                    </div>
+                </footer>
+            </article>
+
             <Comments author={user} id={post.id} />
-        </>
+        </div>
     )
 }
 

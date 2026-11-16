@@ -98,7 +98,7 @@ const EmailConfirmForm = () => {
                         type="submit"
                         isPending={isPending}
                     >
-                      проверить
+                        проверить
                     </button>
                 </form>
             </div>

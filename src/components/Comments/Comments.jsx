@@ -106,94 +106,104 @@ const Comments = ({ id, author }) => {
     if (loading) return <div>загрузка...</div>
 
 
+return (
+  <section className={styles.discussionContainer}>
+    <div className={styles.sectionHeader}>
+      <h2>Ответы и разбор задания</h2>
+      <span className={styles.counterBadge}>{countComments}</span>
+    </div>
 
-    return (
-        <div className={styles.discussionContainer}>
-            <h1>обсуждение</h1>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+    {error && <p className={styles.errorText}>{error}</p>}
 
-            <CreateCommentForm
-                handleAction={handleAction}
-                isSubmitting={isSubmitting}
-            />
+    <CreateCommentForm handleAction={handleAction} isSubmitting={isSubmitting} />
 
-            <div className={styles.commentsSection}>
-                <h2>всего комментариев: {countComments}</h2>
-                <ul className={styles.commentsList}>
-                    {comments.length > 0 ? (
-                        comments.map((comment) => (
-                            <li
-                                style={{
-                                    marginLeft: comment.parent_comment_id ? '45px' : '0px'
-                                }}
-                                key={comment.comment_id}
-                            >
-                                <div className={styles.justInfoBlock}>
-                                    <div className={styles.info}>
-                                        <Link href={`/user/${comment.user_id}`} className={styles.authorInfo}>
-                                            <img
-                                                width={50}
-                                                height={50}
-                                                src={comment.author_avatar || defaulImage.src}
-                                                className={styles.authorAvatar}
-                                                alt="avatar"
-                                            />
-                                            <div className={`${styles.authorName} ${String(author?.id) === String(comment.user_id) && styles.isAuthor}`}>
-                                                {comment.author_name}
-                                            </div>
-                                        </Link>
-                                        <div className={styles.commentCreated}>
-                                            {new Date(comment.created_at).toLocaleDateString('ru-RU', {
-                                                day: 'numeric',
-                                                month: 'long',
-                                                year: 'numeric',
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            })}
-                                        </div>
-                                        <div className={styles.userRole}>
-                                            {comment.user_role === 'teacher' ? <p> учитель</p> : <p> ученик</p>}
+    <div className={styles.commentsSection}>
+      {comments.length > 0 ? (
+        <ul className={styles.commentsList}>
+          {comments.map((comment) => {
+            const isTeacher = comment.user_role === 'teacher';
+            const isReply = Boolean(comment.parent_comment_id);
 
-                                        </div>
-                                    </div>
-                                    {session?.data?.user && String(comment.user_id) === String(session.data.user.id) && (
-                                        <button
-                                            onClick={() => handleDelete(comment.comment_id)}
-                                            className={styles.deleteButton}
-                                        >
+            return (
+              <li
+                key={comment.comment_id}
+                className={`${styles.commentItem} ${isReply ? styles.replyItem : ''} ${
+                  isTeacher ? styles.teacherItem : ''
+                }`}
+              >
+                <div className={styles.justInfoBlock}>
+                  <div className={styles.info}>
+                    <Link href={`/user/${comment.user_id}`} className={styles.authorInfo}>
+                      <img
+                        src={comment.author_avatar || defaulImage.src}
+                        className={styles.authorAvatar}
+                        alt="avatar"
+                      />
+                      <span
+                        className={`${styles.authorName} ${
+                          String(author?.id) === String(comment.user_id) ? styles.isAuthor : ''
+                        }`}
+                      >
+                        {comment.author_name}
+                      </span>
+                    </Link>
 
-                                            удалить
-                                        </button>
-                                    )}
-                                </div>
-                                <div className={styles.commentText}>
-                                    {comment.parent_comment_id && (
-                                        <Link
-                                            className={styles.parentAuthor}
-                                            style={{ marginRight: '5px' }}
-                                            href={`/user/${comment.parent_author_id}`}
-                                        >
-                                            @{comment.parent_author_name}
-                                        </Link>
-                                    )}
-                                    {comment.comment_text}
-                                </div>
-                                <div className={styles.interactionBlock}>
-                                    <Answer
-                                        parentId={comment.comment_id}
-                                        handleAction={handleAction}
-                                        isSubmitting={isSubmitting}
-                                    />
-                                </div>
-                            </li>
-                        ))
-                    ) : (
-                        <h2 style={{ fontStyle: 'italic' }}>комментариев пока нет</h2>
+                    <span className={`${styles.userRole} ${isTeacher ? styles.roleTeacher : ''}`}>
+                      {isTeacher ? 'Учитель' : 'Ученик'}
+                    </span>
+
+                    <time className={styles.commentCreated}>
+                      {new Date(comment.created_at).toLocaleDateString('ru-RU', {
+                        day: 'numeric',
+                        month: 'short',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </time>
+                  </div>
+
+                  {session?.data?.user &&
+                    String(comment.user_id) === String(session.data.user.id) && (
+                      <button
+                        onClick={() => handleDelete(comment.comment_id)}
+                        className={styles.deleteButton}
+                      >
+                        Удалить
+                      </button>
                     )}
-                </ul>
-            </div>
+                </div>
+
+                <div className={styles.commentText}>
+                  {isReply && (
+                    <Link
+                      className={styles.parentAuthor}
+                      href={`/user/${comment.parent_author_id}`}
+                    >
+                      @{comment.parent_author_name}
+                    </Link>
+                  )}
+                  {comment.comment_text}
+                </div>
+
+                <div className={styles.interactionBlock}>
+                  <Answer
+                    parentId={comment.comment_id}
+                    handleAction={handleAction}
+                    isSubmitting={isSubmitting}
+                  />
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <div className={styles.emptyState}>
+          Пока никто не прислал ответ или вопрос по этому заданию.
         </div>
-    )
+      )}
+    </div>
+  </section>
+);
 }
 
 export default Comments

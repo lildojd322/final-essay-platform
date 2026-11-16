@@ -1,256 +1,191 @@
 .discussionContainer {
-    width: 100%;
-    max-width: 800px;
-    margin: 3rem auto;
-    padding: 0 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-
-    h1 {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: var(--foreground);
-        text-transform: capitalize;
-        border-bottom: 2px solid var(--border);
-        padding-bottom: 0.5rem;
-    }
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 
-.commentsSection {
-    h2 {
-        font-size: 1.25rem;
-        color: var(--foreground);
-        margin-bottom: 1rem;
-        opacity: 0.9;
-    }
-}
-
-
-
-.justInfoBlock {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
-
-    .info {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-
-    }
-
-
-}
-
-.deleteButton {
-    opacity: 0;
-
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
     color: var(--foreground);
-    font-size: 15px;
-    transition: 0.3s;
-    font-weight: 500;
-    padding: 2px;
-    border-radius: 5px;
-    transition: all 0.2s ease;
-    background-color: inherit;
-    border: none;
-    cursor: pointer;
-
-
-
-    &:hover {
-        background-color: rgba(220, 38, 38, 0.5);
-        border-color: rgba(220, 38, 38, 0.5);
-        transform: translateY(-1px);
-    }
-
-    &:active {
-        transform: translateY(0);
-    }
+    margin: 0;
+  }
 }
 
+.counterBadge {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.errorText {
+  color: #ef4444;
+  font-size: 0.85rem;
+}
 
 .commentsList {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-
-    li {
-        display: flex;
-        flex-direction: column;
-        gap: 0.35rem;
-        color: var(--foreground);
-        line-height: 1.5;
-        word-break: break-word;
-        padding: 10px;
-        outline: none;
-        transition: 0.3s;
-        border-radius: 10px;
-
-
-        &:hover {
-            .deleteButton {
-                display: block;
-                opacity: 1;
-            }
-
-
-
-
-
-        }
-
-        >div:first-child {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-    }
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
 }
 
+.commentItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1.15rem 1.35rem;
+  background-color: var(--card-bg, #181818);
+  border-radius: 10px;
+  color: var(--foreground);
+
+  &:hover .deleteButton {
+    opacity: 1;
+  }
+}
+
+/* Аккуратная пометка только для учителя */
+.teacherItem {
+  border-left: 3px solid var(--primary);
+}
+
+.replyItem {
+  margin-left: 2rem;
+}
+
+.justInfoBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
 
 .authorInfo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    text-decoration: none;
-    color: var(--foreground);
-    transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: var(--foreground);
 
-    &:hover {
-        opacity: 0.85;
-
-        .authorName {
-            text-decoration: underline;
-        }
-    }
+  &:hover .authorName {
+    text-decoration: underline;
+  }
 }
-
 
 .authorAvatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    background-color: var(--border);
-    border: 1px solid var(--border);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
 }
-
 
 .authorName {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--foreground);
-}
-
-.commentCreated {
-    font-size: 0.75rem;
-    color: var(--foreground);
-    opacity: 0.6;
-}
-
-
-.commentText {
-    font-size: 0.95rem;
-    line-height: 1.4;
-    color: var(--foreground);
-    padding-left: 3.1rem;
-    white-space: pre-wrap;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .isAuthor {
-    color: var(--primary);
+  color: var(--primary);
 }
-
-.interactionBlock {}
-
-
-.parentAuthor {
-    opacity: 0.9;
-    border-radius: 3px;
-    background-color: var(--foreground);
-    color: var(--card-bg);
-}
-
 
 .userRole {
-    font-size: 0.85rem;
+  font-size: 0.8rem;
+  opacity: 0.5;
+}
 
-    opacity: 0.6;
-    padding: 2px;
-    border-radius: 5px;
-    color: var(--primary);
-    padding: 1px;
-    background-color: rgba(214, 159, 43, 0.1);
+.roleTeacher {
+  color: var(--primary);
+  opacity: 0.9;
+}
+
+.commentCreated {
+  font-size: 0.8rem;
+  opacity: 0.45;
+}
+
+.commentText {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+  opacity: 0.92;
+}
+
+.parentAuthor {
+  margin-right: 0.4rem;
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.interactionBlock {
+  margin-top: 0.1rem;
+
+  button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-size: 0.82rem;
+    color: var(--foreground);
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+.deleteButton {
+  opacity: 0;
+  color: var(--foreground);
+  font-size: 0.8rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease, opacity 0.2s ease;
+
+  &:hover {
+    color: #ef4444;
+  }
+}
+
+.emptyState {
+  padding: 1.5rem;
+  background-color: var(--card-bg, #181818);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  opacity: 0.5;
 }
 
 @media (pointer: coarse) {
-
-    .deleteButton {
-        background-color: rgba(220, 38, 38, 0.5);
-        border-color: rgba(220, 38, 38, 0.5);
-        font-weight: 600;
-        opacity: 1;
-    }
+  .deleteButton {
+    opacity: 0.6;
+  }
 }
 
 @media (max-width: 768px) {
-
-
-    .discussionContainer {
-        margin: 1.5rem auto;
-        gap: 1.5rem;
-
-        h1 {
-            font-size: 1.5rem;
-        }
-    }
-
-    .commentForm {
-        flex-direction: column;
-
-        button {
-            width: 100%;
-        }
-    }
-
-    .commentText {
-        padding-left: 0;
-        margin-top: 0.25rem;
-    }
-
-
-    .info {
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .commentsList {
-
-        gap: 0px;
-
-
-
-        li {
-
-
-
-
-            .deleteButton {
-                background-color: rgba(220, 38, 38, 0.5);
-                border-color: rgba(220, 38, 38, 0.5);
-                font-weight: 600;
-                opacity: 1;
-            }
-
-
-
-        }
-    }
+  .replyItem {
+    margin-left: 1rem;
+  }
 }

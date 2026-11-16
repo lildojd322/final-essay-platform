@@ -1,73 +1,67 @@
 .commentForm {
-    display: flex;
-    gap: 0.75rem;
-    width: 100%;
-
-    textarea {
-        flex: 1;
-        transition: height 0.1s ease;
-        resize: none;
-        background: var(--background);
-        border: none;
-        color: var(--foreground);
-        border-bottom: 1px solid var(--border);
-
-        font-size: 1rem;
-        outline: none;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        width: 100%;
-        min-height: 40px;
-        padding: 0.75rem 1rem;
-        resize: none;
-        field-sizing: content;
-
-        &:focus {
-            border-bottom: 1px solid var(--primary);
-
-
-        }
-
-        &::placeholder {
-            color: var(--foreground);
-            opacity: 0.5;
-        }
-    }
-
-    button {
-        background: var(--primary);
-        color: #ffffff;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 6px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.2s;
-
-        &:hover {
-            background: var(--primary-hover);
-        }
-        &:disabled {
-            opacity: 0.5;
-             cursor: not-allowed;
-        pointer-events: none;
-        }
-    }
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
 }
 
+.commentForm textarea {
+  width: 100%;
+  min-height: 90px;
+  max-height: 400px;
+  padding: 0.9rem 1rem;
+  background-color: var(--card-bg, #181818);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  resize: vertical;
+  field-sizing: content;
+  outline: none;
+  transition: border-color 0.2s ease;
 
+  &:focus {
+    border-color: var(--primary);
+  }
 
+  &::placeholder {
+    color: var(--foreground);
+    opacity: 0.4;
+  }
+}
 
-@media (max-width: 768px) {
+.formBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
+.wordCounter {
+  font-size: 0.85rem;
+  color: var(--foreground);
+  opacity: 0.5;
+}
 
-    .commentForm {
-        flex-direction: column;
+.submitButton {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 0.55rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
 
-        button {
-            width: 100%;
-        }
-    }
+  &:hover {
+    opacity: 0.9;
+  }
 
-
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }
