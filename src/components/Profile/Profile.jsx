@@ -10,6 +10,7 @@ import { use, useEffect, useState } from 'react'
 import ProfileLoading from '../ProfileLoading/ProfileLoading'
 import AreYouSureModal from '../AreYouSureModal/AreYouSureModal'
 import { useRouter } from 'next/navigation'
+import SafeImage from '../SafeImage/SafeImage'
 
 const Profile = () => {
     const { data: session, update } = useSession()
@@ -80,11 +81,15 @@ const Profile = () => {
                 <>
 
                     <div className={styles.avatarBlock}>
-                        <Image className={styles.userAvatar} src={getHighResImage(userImageUrl)} width={150} height={150} alt="user avatar" />
+                        <SafeImage
+                            src={getHighResImage(userImageUrl)}
+                            alt="user avatar"
+                            className={styles.userAvatar}
+                        />
                         {provider === 'google' ? '' : <ChangeAvatar onAvatarChange={onAvatarChange} />}
                     </div>
                     <h1 className={styles.username}> {user?.name}</h1>
-                    <h2 className={styles.userId}> id: {user?.id}  {session?.user?.role === 'учитель' ? <p> учитель</p> : <p> ученик</p>}  </h2>
+                    <h2 className={styles.userId}> id: {user?.id}  {session?.user?.role === 'teacher' ? <p> учитель</p> : <p> ученик</p>}  </h2>
                     <div className={styles.buttonContainer}>
                         <button className={styles.signOutButton} onClick={() => signOut({
                             callbackUrl: '/signin'

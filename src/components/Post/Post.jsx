@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth/next"
 import { deletePostById } from '../../lib/db'
 import DeleteButton from '../DeleteButton/DeleteButton'
 import Comments from '../Comments/Comments'
+import SafeImage from '../SafeImage/SafeImage'
 
 const Post = async ({ post, user }) => {
     const session = await getServerSession(authConfig)
@@ -47,7 +48,12 @@ const Post = async ({ post, user }) => {
                             <span className={styles.deletedUser}>удаленный аккаунт</span>
                         ) : (
                             <Link href={`/user/${user.id}`} className={styles.authorLink}>
-                                <img src={authorImage} className={styles.avatar} alt="avatar" />
+                                <SafeImage
+                                    src={authorImage}
+                                    alt="avatar"
+                                    className={styles.avatar}
+                                    fallbackText="нет "
+                                />
                                 <span className={styles.authorName}>{authorName}</span>
                             </Link>
                         )}
