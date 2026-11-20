@@ -57,7 +57,7 @@ const Verify = () => {
         <div className={styles.header}>
           <h1 className={styles.title}>Verify Your Email</h1>
           <p className={styles.subtitle}>
-           Мы отправили 6-значный код подтверждения на адрес <strong>{email}</strong>. 
+            Мы отправили 6-значный код подтверждения на адрес <strong>{email}</strong>.
             Пожалуйста, введите его ниже, чтобы активировать свою учетную запись.
           </p>
         </div>
@@ -79,9 +79,9 @@ const Verify = () => {
             )}
           />
 
-          <button 
-            className={styles.button} 
-            type="submit" 
+          <button
+            className={styles.button}
+            type="submit"
             disabled={isPending}
           >
             {isPending ? 'Проверка...' : 'Проверить код'}

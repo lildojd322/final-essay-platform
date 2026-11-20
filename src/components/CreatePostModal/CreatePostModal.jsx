@@ -7,13 +7,16 @@ import { useRouter } from 'next/navigation'
 import styles from './CreatePostModal.module.scss'
 import { useSession } from "next-auth/react"
 import { usePostStore } from '../../store/store'
-
+import { useRef } from 'react'
 
 const CreatePostModal = ({ isOpen, changeModalStatus }) => {
     const [error, setError] = useState(false)
     const [isPending, setIsPending] = useState(false)
+    const [imageFiles, setImageFiles] = useState([])
+
     const router = useRouter()
     const session = useSession()
+    const inputRef = useRef(null)
     const { reset, deleteOptimisticPost, addOptimisticPost, updateOptimisticPost } = usePostStore()
 
 
@@ -24,6 +27,33 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
         }
 
 
+    }
+
+    const handleClick = () => {
+        inputRef.current.click()
+    }
+
+    const handleFileChange = (e) => {
+        const selectedFiles = Array.from(e.target.files || [])
+        if (selectedFiles.length === 0) return
+
+        const newImages = selectedFiles.slice(0, 5 - imageFiles.length).map((file) => ({
+            id: crypto.randomUUID(),
+            file,
+            previewUrl: URL.createObjectURL(file)
+        }))
+
+        setImageFiles((prev) => [...prev, ...newImages])
+        e.target.value = ''
+    }
+
+
+    const handleRemoveImage = (idToRemove) => {
+        setImageFiles((prev) => {
+            const target = prev.find((img) => img.id === idToRemove)
+            if (target) URL.revokeObjectURL(target.previewUrl)
+            return prev.filter((img) => img.id !== idToRemove)
+        })
     }
 
     const handleSubmit = async (event) => {
@@ -66,7 +96,7 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
 
             const realPost = {
                 ...tempPost,
-                id: result.id 
+                id: result.id
             }
             updateOptimisticPost(tempPost.id, realPost)
             changeModalStatus()
@@ -101,12 +131,44 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
                         required
                         className={styles.textarea}
                     />
+                    <input
+                        ref={inputRef}
+                        type="file"
+                        accept="image/png, image/jpeg, image/webp"
+                        multiple
+                        onChange={handleFileChange}
+                        style={{ display: 'none' }}
+                    />
+
+                    {imageFiles.length < 5 && (
+                        <button type="button" className={styles.fileAdder} onClick={handleClick}>
+                            добавить фотографии ({imageFiles.length}/5) +
+                        </button>
+                    )}
+
+                    {imageFiles.length > 0 && (
+                        <ul className={styles.previewList}>
+                            {imageFiles.map((item) => (
+                                <li key={item.id} className={styles.previewItem}>
+                                    <img src={item.previewUrl} alt="превью" className={styles.previewImage} />
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRemoveImage(item.id)}
+                                        className={styles.removeOverlay}
+                                        title="Удалить"
+                                    >
+                                        ✕
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                     <button disabled={isPending} type="submit" className={styles.submitButton}>
                         создать
                     </button>
                 </form>
             </div>
-        </div>
+        </div >
     )
 }
 
