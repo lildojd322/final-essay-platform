@@ -1,36 +1,42 @@
 'use client'
 
-
 import { postSchema } from '../../lib/zod'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import styles from './CreatePostModal.module.scss'
 import { useSession } from "next-auth/react"
 import { usePostStore } from '../../store/store'
-import { useRef } from 'react'
 
 const CreatePostModal = ({ isOpen, changeModalStatus }) => {
-    const [error, setError] = useState(false)
+    const [error, setError] = useState('')
     const [isPending, setIsPending] = useState(false)
     const [imageFiles, setImageFiles] = useState([])
 
     const router = useRouter()
     const session = useSession()
     const inputRef = useRef(null)
-    const { reset, deleteOptimisticPost, addOptimisticPost, updateOptimisticPost } = usePostStore()
+    const { deleteOptimisticPost, addOptimisticPost, updateOptimisticPost } = usePostStore()
 
+
+    if (!isOpen) return null
+
+
+    const closeAndReset = () => {
+        imageFiles.forEach((item) => URL.revokeObjectURL(item.previewUrl))
+        setImageFiles([])
+        setError('')
+        setIsPending(false)
+        changeModalStatus()
+    }
 
     const handleOverlayClick = (e) => {
-
-        if (e.target === e.currentTarget) {
-            changeModalStatus()
+        if (e.target === e.currentTarget && !isPending) {
+            closeAndReset()
         }
-
-
     }
 
     const handleClick = () => {
-        inputRef.current.click()
+        inputRef.current?.click()
     }
 
     const handleFileChange = (e) => {
@@ -47,7 +53,6 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
         e.target.value = ''
     }
 
-
     const handleRemoveImage = (idToRemove) => {
         setImageFiles((prev) => {
             const target = prev.find((img) => img.id === idToRemove)
@@ -61,58 +66,69 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
         setError('')
         const formData = new FormData(event.currentTarget)
 
-        const data = Object.fromEntries(formData.entries())
-
-
-        const validation = postSchema.safeParse(data)
+        const validation = postSchema.safeParse({
+            title: formData.get('title'),
+            description: formData.get('description'),
+            images: imageFiles.map((item) => item.file),
+        })
 
         if (!validation.success) {
-            const firstError = validation.error.issues[0].message
-            setError(firstError)
+            setError(validation.error.issues[0].message)
             return
         }
+
         const tempPost = {
             id: Date.now(),
             title: validation.data.title,
             description: validation.data.description,
+            images: imageFiles.map((item) => item.previewUrl),
             created_at: new Date().toISOString(),
-            author_name: session?.data?.user?.name || 'anonymous',
+            author_name: session?.data?.user?.name || 'учитель',
             userId: session?.data?.user?.id || session?.data?.user?.sub || ''
-
         }
-        addOptimisticPost(tempPost)
 
+        addOptimisticPost(tempPost)
         setIsPending(true)
 
-        const response = await fetch('/api/createPost', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(validation.data)
-        })
+        try {
+            const payload = new FormData()
+            payload.append('title', validation.data.title)
+            payload.append('description', validation.data.description)
+            imageFiles.forEach((item) => {
+                payload.append('images', item.file)
+            })
 
+            const response = await fetch('/api/createPost', {
+                method: 'POST',
+                body: payload
+            })
 
-        if (response.ok) {
             const result = await response.json()
 
-            const realPost = {
-                ...tempPost,
-                id: result.id
+            if (response.ok) {
+                const realPost = {
+                    ...tempPost,
+                    id: result.id,
+                    images: result.images || tempPost.images
+                }
+                updateOptimisticPost(tempPost.id, realPost)
+                closeAndReset() 
+                router.refresh()
+            } else {
+                setError(result.error || 'Не удалось создать задание')
+                deleteOptimisticPost(tempPost.id)
+                setIsPending(false)
             }
-            updateOptimisticPost(tempPost.id, realPost)
-            changeModalStatus()
-            router.refresh()
-        } else {
-            const result = await response.json()
-            setError(result.error || 'failed')
+        } catch (err) {
+            console.error('Submit error:', err)
+            setError('Ошибка сети или сервера')
             deleteOptimisticPost(tempPost.id)
             setIsPending(false)
         }
     }
 
-
-
     return (
-        <div onMouseDown={handleOverlayClick} className={styles.overlay} >
+        <div onMouseDown={handleOverlayClick} className={styles.overlay}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                 <h1 className={styles.h1}>создать задание</h1>
                 <form onSubmit={handleSubmit} className={styles.form}>
@@ -123,7 +139,6 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
                         placeholder="название"
                         required
                         className={styles.input}
-
                     />
                     <textarea
                         name="description"
@@ -163,12 +178,13 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
                             ))}
                         </ul>
                     )}
+
                     <button disabled={isPending} type="submit" className={styles.submitButton}>
-                        создать
+                        {isPending ? 'создание...' : 'создать'}
                     </button>
                 </form>
             </div>
-        </div >
+        </div>
     )
 }
 

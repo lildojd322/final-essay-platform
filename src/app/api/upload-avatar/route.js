@@ -41,21 +41,17 @@ export async function POST(request) {
 
         const safeUserId = session.user.email.replace(/[^a-zA-Z0-9]/g, '_')
 
-    const result = await cloudinary.uploader.upload(base64, {
+        const url = await uploadToCloudinary(file, {
             folder: 'avatars',
-            public_id: `user_${safeUserId}`,
-            overwrite: true,              
-            invalidate: true,              
-            transformation: [
-                { width: 300, height: 300, crop: 'fill' },
-                { format: 'webp', quality: 'auto' }
-            ]
+            publicId: `user_${safeUserId}`,
+            isAvatar: true
         })
-        const url = result.secure_url
 
         await updateUserAvatarByEmail(session.user.email, url)
 
         return NextResponse.json({ url })
+
+
 
     } catch (error) {
         console.error('Upload error:', error)

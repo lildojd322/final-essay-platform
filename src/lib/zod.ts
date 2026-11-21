@@ -14,9 +14,36 @@ export const loginSchema = z.object({
 })
 
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+
+
 export const postSchema = z.object({
-    title: z.string().min(2, "The title must be at least 2 characters long").max(50, 'title is too long'),
-    description: z.string().min(3, "The description must be at least 3 characters long").max(300, 'description is too long ')
+    title: z
+        .string()
+        .trim()
+        .min(2, 'Название должно содержать минимум 2 символа')
+        .max(150, 'Название слишком длинное (максимум 150 символов)'),
+
+    description: z
+        .string()
+        .trim()
+        .min(3, 'Описание должно содержать минимум 3 символа')
+        .max(5000, 'Описание слишком длинное (максимум 5000 символов)'),
+
+    images: z
+        .array(z.instanceof(File))
+        .max(5, 'Можно прикрепить максимум 5 фотографий')
+        .refine(
+            (files) => files.every((file) => file.size <= MAX_FILE_SIZE),
+            'Размер каждой фотографии не должен превышать 5 МБ'
+        )
+        .refine(
+            (files) => files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.type)),
+            'Поддерживаются только форматы JPG, PNG и WebP'
+        )
+        .optional()
+        .default([]),
 })
 
 export const commentSchema = z.object({

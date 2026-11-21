@@ -90,14 +90,17 @@ export const fetchLatestPostsFromDBById = cache(async (userId) => {
     return rows
 })
 
-export async function forwardPostToDB(title, description, email, name, userId) {
+export async function forwardPostToDB(title, description, email, name, userId, imageUrls = []) {
+
+    const imagesJson = imageUrls.length > 0 ? JSON.stringify(imageUrls) : null
+
     const [result] = await pool.execute(
-        'INSERT INTO posts (title, body, author_email, author_name, userId) VALUES (?, ?, ?, ?, ?)',
-        [title, description, email, name, userId]
+        'INSERT INTO posts (title, body, author_email, author_name, userId, images) VALUES (?, ?, ?, ?, ?, ?)',
+        [title, description, email, name, userId, imagesJson]
     )
+
     return { success: true, id: result.insertId }
 }
-
 export async function deletePostById(id) {
     await pool.execute('DELETE FROM posts WHERE id = ?', [id])
 }
