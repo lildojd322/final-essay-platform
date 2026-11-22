@@ -19,7 +19,9 @@ const Profile = () => {
     const provider = user?.provider
     const [loading, setLoading] = useState(true)
     const [isModalOpen, setIsModalOpen] = useState(false)
-
+    const avatarSrc = provider === 'google'
+        ? getHighResImage(userImageUrl)
+        : userImageUrl
 
     const onAvatarChange = async (file) => {
         const formData = new FormData()
@@ -75,6 +77,8 @@ const Profile = () => {
 
     }
     if (loading) return (<ProfileLoading />)
+
+
     return (
         <div className={styles.profileContainer}>
             {user && (
@@ -82,7 +86,7 @@ const Profile = () => {
 
                     <div className={styles.avatarBlock}>
                         <SafeImage
-                            src={getHighResImage(userImageUrl)}
+                            src={avatarSrc}
                             alt="user avatar"
                             className={styles.userAvatar}
                         />
