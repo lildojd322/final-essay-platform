@@ -7,6 +7,7 @@ import { deletePostById } from '../../lib/db'
 import DeleteButton from '../DeleteButton/DeleteButton'
 import Comments from '../Comments/Comments'
 import SafeImage from '../SafeImage/SafeImage'
+import PostImagesBlock from '../PostImagesBlock/PostImagesBlock'
 
 const Post = async ({ post, user }) => {
     const session = await getServerSession(authConfig)
@@ -33,14 +34,8 @@ const Post = async ({ post, user }) => {
                 <h1 className={styles.title}>{post.title}</h1>
                 <div className={styles.body}>{post.body}</div>
 
-                {/*  под будущие фото  */}
-                {post.images?.length > 0 && (
-                    <div className={styles.attachmentsGrid}>
-                        {post.images.map((img, idx) => (
-                            <img key={idx} src={img} alt="Материал к заданию" className={styles.attachmentImage} />
-                        ))}
-                    </div>
-                )}
+                <PostImagesBlock images={post.images} />
+        
 
                 <footer className={styles.taskFooter}>
                     <div className={styles.authorBlock}>
