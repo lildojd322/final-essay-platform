@@ -41,3 +41,28 @@ export async function uploadToCloudinary(file, { folder, publicId = null, isAvat
     const result = await cloudinary.uploader.upload(base64, uploadOptions)
     return result.secure_url
 }
+function getPublicIdFromUrl(url) {
+    if (!url || typeof url !== 'string') return null
+
+
+    const parts = url.split('/upload/')
+    if (parts.length < 2) return null
+
+
+    return parts[1].replace(/^v\d+\//, '').replace(/\.[^/.]+$/, '')
+}
+
+
+export async function deleteFromCloudinary(urls) {
+    const urlList = Array.isArray(urls) ? urls : [urls]
+
+    const deletePromises = urlList.map((url) => {
+        const publicId = getPublicIdFromUrl(url)
+        if (!publicId) return Promise.resolve(null)
+
+        return cloudinary.uploader.destroy(publicId)
+    })
+
+
+    return Promise.allSettled(deletePromises)
+}
