@@ -91,7 +91,11 @@ const PostsList = (props) => {
                         <div className={styles.postMeta}>
                             <span className={styles.author}>{post.author_name}</span>
                             <span className={styles.date}>
-                                {new Date(post.created_at).toLocaleDateString('ru-RU')}
+                                {new Date(post.created_at).toLocaleDateString('ru-RU', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                })}
                             </span>
                         </div>
                     </li>
