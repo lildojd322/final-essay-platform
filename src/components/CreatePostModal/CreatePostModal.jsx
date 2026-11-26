@@ -112,7 +112,7 @@ const CreatePostModal = ({ isOpen, changeModalStatus }) => {
                     images: result.images || tempPost.images
                 }
                 updateOptimisticPost(tempPost.id, realPost)
-                closeAndReset() 
+                closeAndReset()
                 router.refresh()
             } else {
                 setError(result.error || 'Не удалось создать задание')

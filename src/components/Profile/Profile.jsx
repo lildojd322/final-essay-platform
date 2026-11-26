@@ -1,15 +1,13 @@
 'use client'
 import LatestUserPosts from '../../components/LatestUserPosts/LatestUserPosts'
 import { useSession, signOut } from "next-auth/react"
-import Image from "next/image"
 import styles from './Profile.module.scss'
 import getHighResImage from '../../hooks/getHighResImage'
 import defaultImage from '../../icons/avat.jpeg'
 import ChangeAvatar from '../ChangeAvatar/ChangeAvatar'
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import ProfileLoading from '../ProfileLoading/ProfileLoading'
 import AreYouSureModal from '../AreYouSureModal/AreYouSureModal'
-import { useRouter } from 'next/navigation'
 import SafeImage from '../SafeImage/SafeImage'
 
 const Profile = () => {
@@ -19,6 +17,9 @@ const Profile = () => {
     const provider = user?.provider
     const [loading, setLoading] = useState(true)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const menuRef = useRef(null)
+
     const avatarSrc = provider === 'google'
         ? getHighResImage(userImageUrl)
         : userImageUrl
@@ -31,10 +32,7 @@ const Profile = () => {
             method: 'POST',
             body: formData
         })
-        if (!response.ok) {
-            const { error } = await response.json()
-            return
-        }
+        if (!response.ok) return
 
         const { url } = await response.json()
         setUserImageUrl(url)
@@ -42,9 +40,7 @@ const Profile = () => {
     }
 
     useEffect(() => {
-        if (user) {
-            setLoading(false)
-        }
+        if (user) setLoading(false)
     }, [user])
 
     useEffect(() => {
@@ -54,35 +50,78 @@ const Profile = () => {
         }
     }, [user?.image])
 
-    console.log(user?.id)
+    
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsMenuOpen(false)
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [])
 
     const handleClick = async () => {
         fetch(`/api/users/deleteUser?id=${user?.id}`, {
             method: 'DELETE'
         })
             .then(res => res.json())
-            .then(data => {
-                signOut({
-                    callbackUrl: '/signin'
-                })
-                return
+            .then(() => {
+                signOut({ callbackUrl: '/signin' })
             })
             .catch(err => {
                 console.error("error:", err)
                 setLoading(false)
             })
     }
+
     const changeModalStatus = () => {
-        isModalOpen ? setIsModalOpen(false) : setIsModalOpen(true)
-
+        setIsModalOpen(prev => !prev)
+        setIsMenuOpen(false) 
     }
-    if (loading) return (<ProfileLoading />)
 
+    if (loading) return (<ProfileLoading />)
 
     return (
         <div className={styles.profileContainer}>
             {user && (
                 <>
+
+                    <div className={styles.settingsWrapper} ref={menuRef}>
+                        <button
+                            type="button"
+                            className={styles.gearButton}
+                            onClick={() => setIsMenuOpen(prev => !prev)}
+                            aria-label="Настройки профиля"
+                        >
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            </svg>
+                        </button>
+
+                        {isMenuOpen && (
+                            <div className={styles.dropdownMenu}>
+                                <button
+                                    type="button"
+                                    className={styles.menuItem}
+                                    onClick={() => signOut({ callbackUrl: '/signin' })}
+                                >
+                                    Выйти из аккаунта
+                                </button>
+
+                                {user?.id === session?.user?.id && (
+                                    <button
+                                        type="button"
+                                        className={`${styles.menuItem} ${styles.dangerItem}`}
+                                        onClick={changeModalStatus}
+                                    >
+                                        Удалить аккаунт
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                    </div>
 
                     <div className={styles.avatarBlock}>
                         <SafeImage
@@ -92,21 +131,20 @@ const Profile = () => {
                         />
                         {provider === 'google' ? '' : <ChangeAvatar onAvatarChange={onAvatarChange} />}
                     </div>
-                    <h1 className={styles.username}> {user?.name}</h1>
-                    <h2 className={styles.userId}> id: {user?.id}  {session?.user?.role === 'teacher' ? <p> учитель</p> : <p> ученик</p>}  </h2>
-                    <div className={styles.buttonContainer}>
-                        <button className={styles.signOutButton} onClick={() => signOut({
-                            callbackUrl: '/signin'
-                        })} >выйти с аккаунта</button>
-                        {user?.id === session?.user?.id && <button onClick={changeModalStatus} className={styles.signOutButton}>удалить аккаунт</button>}
 
-                        {isModalOpen && <AreYouSureModal changeModalStatus={changeModalStatus} handleClick={handleClick} />}
-                    </div>
+                    <h1 className={styles.username}>{user?.name}</h1>
+                    <h2 className={styles.userId}>
+                        id: {user?.id} {session?.user?.role === 'teacher' ? <span>учитель</span> : <span>ученик</span>}
+                    </h2>
 
+                    {isModalOpen && (
+                        <AreYouSureModal
+                            changeModalStatus={changeModalStatus}
+                            handleClick={handleClick}
+                        />
+                    )}
                 </>
-            )
-
-            }
+            )}
 
             <LatestUserPosts name={user?.name} id={user?.id} />
         </div>
